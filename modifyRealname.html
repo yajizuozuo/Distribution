@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>修改实名认证</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+	</head>
+	<body>
+		<header class="header_common">
+			<img src="img/back.png">
+			<p>修改实名认证</p>
+		</header>
+		<div class="indexHeadPic">
+				<img src="img/memberHead.png" width="100%" />
+		</div>
+		<div class="commonContainer textCenter" style="margin-top: 1rem;">
+			<div class="formBox">
+				<div class="inputBox bankCardInput" style="margin-bottom: 1rem;">
+					<div class="inputBoxCell clearfix">
+						<div class="left">
+							<input id="userName" type="text" placeholder="请输入姓名" />
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						<div class="left">
+							<input id="userIDCard" type="text" placeholder="请输入身份证号码" />
+						</div>
+					</div>
+					<!--<div class="inputBoxCell clearfix">
+						<div class="left">
+							<input  type="text" value="您还有X次机会" placeholder="18912345678"  style="width: 7rem;"/>
+						</div>
+						<div class="right">
+							<span class="inputSpan">获取验证码</span>
+						</div>
+					</div>-->
+					
+				</div>
+				<button  class="commonBtn btnBigSize dealRealName colorWhite textCenter" onclick="dealRealName()">保存</button>
+			</div>
+		</div>
+		<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+		<script src="js/alert.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+			$(".header_common").click(function(){
+				$("body").animate({left:"100%"}, 150,function() {
+				    window.location.href = "index.html#3";
+				});
+			})
+			var token = sessionStorage.getItem("token");
+			function dealRealName(){
+				$(".dealRealName").attr("disabled","disabled")
+				var userIDCard = $("#userIDCard").val();
+				var userName = $("#userName").val();
+				var regExpChina = /^[\u4e00-\u9fa5]{0,}$/; 
+				var regExpIdCard = /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/
+	
+				if(!userName){
+					alert_("请输入您的真实姓名！")
+					$(".dealRealName").removeAttr("disabled");
+					return false;
+				}else if(!regExpChina.test(userName)){
+					alert_("请输入中文姓名！")
+					$(".dealRealName").removeAttr("disabled");
+					return false;
+				}
+				if(!userIDCard){
+					alert_("请输入您的身份证号！")
+					$(".dealRealName").removeAttr("disabled");
+					return false;
+				}else if(!regExpIdCard.test(userIDCard)){
+					alert_("身份证号码格式有误！")
+					$(".dealRealName").removeAttr("disabled");
+					return false;
+				}
+				
+				var parm = {
+					userIDCard: userIDCard,
+					userName: userName
+				}
+				$.ajax({
+					type:"post",
+					url: ajax_url()+ "busiUser/modifyUserInfo.shtml?token=" + token,
+					async:true,
+					data:parm,
+					success:function(data){
+						var data = eval("("+data+")");
+						if(data.success){
+			      			alert_(data.success);
+			      			sessionStorage.setItem('userIDCard',userIDCard);
+							sessionStorage.setItem('userName',userName);
+			      			setTimeout(function(){
+									window.location.href = "index.html#3"
+								},1000)
+			      		}else{
+			      			alert_(data.error);
+			      			$(".dealRealName").removeAttr("disabled");
+			      		}
+					}
+				});
+			}
+		</script>
+	</body>
+</html>

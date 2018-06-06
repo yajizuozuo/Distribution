@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>每月拿货业绩</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+		<link rel="stylesheet" href="css/dropload.css" />
+    	
+    	<style>
+    		.commonBox .clearfix{
+    			margin-left: 0.5rem;
+    			margin-right: 0.5rem;
+    			padding-top: 0.5rem;
+    			padding-bottom: 0.5rem;
+    		}
+    		.orderManCell{
+    			margin-top: 1rem;
+    		}
+    		.orderManCell .clearfix:first-child{
+    			border-bottom: 1px solid #eee;
+    		}
+    		.orderManCellDetail .left{
+    			width: 33%;
+    		}
+    		.orderManCellDetail .right{
+    			width: 10%;
+    			line-height: 3rem;
+    		}
+    		.dataInput{width: 100%;border: none;color: #fff;background-color:rgba(0,0,0,0);outline: none;line-height: 2rem;}
+    		.performance{display: none;}
+    	</style>
+	</head>
+	<body>
+		<header class="header_common" style="z-index: 2;">
+			<img src="img/back.png">
+			<p>每月拿货业绩</p>
+		</header>
+		<div class="indexHeadPic">
+				<img src="img/memberHead.png" width="100%" />
+				<div class="DataStatistics">
+					<p class="DataStatisticsBox">
+						<input class="dataInput" id="date" type="text" onfocus="(this.type='month')" oninput="(this.type='text')" onchange="(this.type='text')"  placeholder="日期选择"/>
+						
+						<img src="img/down.png" />
+					
+					</p>
+					<div class="clearfix" >
+						<div class="left">
+							<!--<p class="bigText textCenter colorGreen" id="totalGoods">0</p>
+							<p class="midText textCenter colorWhite">总拿货盒数</p>-->
+							<p class="upText textCenter colorGreen" id="totalMonthGoods">0</p>
+							<p class="mismText textCenter colorWhite">当月拿货数量</p>
+						</div>
+						<span class="spanbox" style="height: 3rem;display: inline-block;"></span>
+						<div class="right">
+							<!--<p class="bigText textCenter colorGreen" id="totalAmt">0</p>
+							<p class="midText textCenter colorWhite">总拿货价格</p>-->
+							<p class="upText textCenter colorGreen" id="totalMonthAmt">0</p>
+							<p class="mismText textCenter colorWhite">当月拿货价格</p>
+						</div>
+					</div>
+				</div>
+		</div>
+		
+		<div class="content">
+			
+		</div>
+		<script src="js/jquery-1.10.1.min.js"></script>
+		<script src="js/alert.js"></script>
+		<script type="text/javascript" src="js/dropload.min.js" ></script>
+		
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script>
+			$(".header_common").click(function(){
+				$("body").animate({left:"100%"}, 300,function() {
+				    $("body").html("");
+				    window.location.href = "index.html#2";
+				});
+					
+			})
+			
+			var token = sessionStorage.getItem("token");
+			
+			
+			$("#date").on("blur",function(){
+				$(this).attr("type","text");
+				var month = $("#date").val();
+				if(!month){
+					alert_("请选择月份")
+					return false;
+				}
+				init(month);
+		})	
+			
+			
+			var init = function(month){
+				
+				
+				if(month){
+					var  monthDate =  month
+				}else {
+					var date = new Date();
+					var y = date.getFullYear();      
+				    var m = date.getMonth() + 1;      
+				    m = m < 10 ? ('0' + m) : m;    
+				    var  monthDate = y + '-' + m;
+				}
+//				alert_(monthDate);
+				
+				var parm = {
+					month: monthDate,
+					pageSize:8,
+					pageNow:0
+				}
+				$(".content").html("");
+				
+				$('.content').dropload({
+		        scrollArea : window,
+		        domDown : {
+		            domClass   : 'dropload-down',
+		            domRefresh : '<div class="dropload-refresh">↑上拉加载</div>',
+		            domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+		            domNoData  : '<div class="dropload-noData">暂无数据</div>'
+		        },
+				loadDownFn : function(me){
+	            	parm.pageNow++;
+	            	// 拼接HTML
+					var cHtml = "";
+				
+					$.ajax({
+						type:"post",
+						url:ajax_url()+"order/getUserAchievement.shtml?token="+ token,
+						async:true,
+						data:parm,
+						success:function(data){
+//						console.log(data)
+						var data = eval("("+data+")")
+						if(data.success){
+//							$("#totalGoods").html(data.business.totalGoods)
+//							$("#totalAmt").html(data.business.totalAmt)
+							if(data.business){
+								$("#totalMonthAmt").html(calcNum(parseInt(data.business.totalMonthAmt)))
+								$("#totalMonthGoods").html(calcNum(data.business.totalMonthGoods))
+							}else{
+								$("#totalMonthAmt").html('0')
+								$("#totalMonthGoods").html('0')
+							}
+							
+							
+							if(data.UserAchievement.records){
+								var dataRecode = data.UserAchievement.records;
+								if(dataRecode.length > 0){
+									for(var index in dataRecode){
+										cHtml += '<div class="commonContainer commonBox orderManCell"><div class="clearfix">'
+										var time = formatDateTimeJQ(dataRecode[index].createTime)
+										cHtml += '<div class="left colorFont smallText">收款时间：'+ time +'</div></div><div class="clearfix orderManCellDetail"><div class="left">'
+										cHtml += '<p class="colorBlue upText textCenter">'+ dataRecode[index].price +'</p><p class="mismText textCenter">拿货价格</p></div>'
+										cHtml += '<div class="left"><p class="colorBlue upText textCenter">'+ calcNum(dataRecode[index].goodsNUm) +'</p><p class="mismText textCenter">拿货数量</p></div>'
+										cHtml += '<div class="left"><p class="colorBlue upText textCenter">'+ calcNum(parseInt(dataRecode[index].totalPrice)) +'</p><p class="mismText textCenter">成交总计</p></div>'
+										cHtml += '</div></div>'
+									}
+									$(".content").prepend(cHtml);
+									me.resetload();
+								}else if(dataRecode.length == 0){
+									 // 锁定
+					                me.lock();
+					                // 无数据
+					                me.noData();
+					                me.resetload();
+								}
+							}
+						}
+						
+					},
+					error: function(xhr, type){
+		                    alert_('请求错误');
+		                    // 即使加载出错，也得重置
+		                    me.resetload();
+		                }
+				})
+				},
+				threshold : 50
+				
+			})
+				
+				
+			}
+			
+			init();
+		</script>
+		
+		
+	</body>
+</html>

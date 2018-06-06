@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>客户管理</title>
+		<link rel="stylesheet" href="css/reset.css" />
+		<link rel="stylesheet" href="css/alert_.css" />
+		<link rel="stylesheet" href="css/index.css" />
+		<link rel="stylesheet" href="css/dropload.css" />
+	</head>
+	<body>
+		<header class="header_common">
+			<img src="img/back.png">
+			<p>客户管理</p>
+		</header>
+		<div class="indexHeadPic">
+			<img src="img/memberHead.png" width="100%" />
+			<div class="customerStatBox">
+				<p class="textCenter bigText colorGreen" id="totleNum">0</p>
+				<p class="textCenter midText colorWhite">我的客户</p>
+			</div>
+		</div>	
+		<div class="myCustomerbox content" id="contentBox">
+			
+		</div>
+		<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+		<script src="js/alert.js"></script>
+		<script src="js/common.js"></script>
+		<script type="text/javascript" src="js/dropload.min.js" ></script>
+		<script>
+			$(".header_common").click(function(){
+				$("body").animate({left:"100%"}, 150,function() {
+				    window.location.href = "index.html#2";
+				});
+			})
+			var token = sessionStorage.getItem("token")
+			$("#contentBox").html("");
+			
+			var	pageSize = 8;
+			var	pageNow = 0;
+			
+			$('.content').dropload({
+		        scrollArea : window,
+		        domDown : {
+		            domClass   : 'dropload-down',
+		            domRefresh : '<div class="dropload-refresh">↑上拉加载</div>',
+		            domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+		            domNoData  : '<div class="dropload-noData">暂无数据</div>'
+		        },
+				loadDownFn : function(me){
+	            	pageNow++;
+	            	// 拼接HTML
+					var cHtml = "";
+			
+					$.ajax({
+						type:"post",
+						url:ajax_url() +"busiUser/downUserList.shtml?token=" +token,
+						async:true,
+						data: {pageSize:pageSize,pageNow:pageNow},
+						dataType: 'json',
+						success:function(data){
+//							var data = eval("("+data+")");
+		//					console.log(data.userAccountInfo.rowCount);
+							var totleNum = data.downUserList.rowCount;
+							$("#totleNum").html(totleNum);
+							if(data.error){
+								window.location.href = "login.html";
+							}else if(data.downUserList.records){
+								var records = data.downUserList.records
+								if(records.length > 0){
+									for(var index in records){
+										cHtml += '<div class="commonContainer commonBox myCustomerCell mismText"><div class="myCustomerDetail">';
+										var time = formatDateTimeJQ(records[index].createTime);
+										console.log(time);
+										cHtml += '<p class="registertime colorFont">'+ time +'</p>'
+										cHtml += '<div class="clearfix"><div class="left">'
+										cHtml += '<p >用户账号:&nbsp;<span class="colorFont">'+ records[index].userID +'</span></p>'
+										cHtml += '<p >电话:&nbsp;<span class="colorFont">'+ records[index].phone +'</span></p></div>'
+										cHtml += '<div class="right"><p >用户姓名:&nbsp;<span class="colorFont">'+ records[index].userName +'</span></p><p class="textRight">级别:&nbsp; <span class="colorFont">'+ records[index].level +'</span></p>'
+										cHtml += '</div></div></div></div>'
+									}
+									$("#contentBox").prepend(cHtml);
+									me.resetload();
+								}else if(records.length == 0){
+									 // 锁定
+					                me.lock();
+					                // 无数据
+					                me.noData();
+					                me.resetload();
+					           }
+							}
+						},
+		                error: function(xhr, type){
+		                    alert_('请求错误');
+		                    // 即使加载出错，也得重置
+		                    me.resetload();
+		                }
+					});
+			},
+	        threshold : 50
+	    });
+		</script>
+	</body>
+</html>

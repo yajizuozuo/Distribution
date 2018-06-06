@@ -1,0 +1,105 @@
+.alert {
+	position: fixed;
+	left: 50%;
+	top: 30%;
+	width: 60%;
+	/*background: rgba(241, 236, 236, 0.3);
+	color: #c3803d;*/
+	background: #000;
+	color: #fff;
+	line-height: 2rem;
+	border-radius: 0.5rem;
+	text-align: center;
+}
+
+.fade {
+	opacity: 0;
+	animation: fade 3s;
+	-webkit-animation: fade 3s;
+	-moz-animation: fade 3s;
+	-o-animation: fade 3s;
+	-ms-animation: fade 3s;
+	animation-fill-mode: both;
+}
+
+@keyframes fade {
+	0%,
+	100% {
+		opacity: 0;
+		transform: translate(-50%) scale(0);
+		-moz-transform: translate(-50%) scale(0);
+		-webkit-transform: translate(-50%) scale(0);
+		-o-transform: translate(-50%) scale(0);
+	}
+	5%,
+	50%,
+	95% {
+		opacity: 1;
+		transform: translate(-50%) scale(1);
+		transform: translate(-50%) scale(1);
+		-moz-transform: translate(-50%) scale(1);
+		-webkit-transform: translate(-50%) scale(1);
+		-o-transform: translate(-50%) scale(1);
+	}
+}
+@-moz-keyframes fade {
+	0%,
+	100% {
+		opacity: 0;
+		transform: translate(-50%) scale(0);
+		-moz-transform: translate(-50%) scale(0);
+		-webkit-transform: translate(-50%) scale(0);
+		-o-transform: translate(-50%) scale(0);
+	}
+	5%,
+	50%,
+	95% {
+		opacity: 1;
+		transform: translate(-50%) scale(1);
+		transform: translate(-50%) scale(1);
+		-moz-transform: translate(-50%) scale(1);
+		-webkit-transform: translate(-50%) scale(1);
+		-o-transform: translate(-50%) scale(1);
+	}
+}
+
+@-webkit-keyframes fade {
+	0%,
+	100% {
+		opacity: 0;
+		transform: translate(-50%) scale(0);
+		-moz-transform: translate(-50%) scale(0);
+		-webkit-transform: translate(-50%) scale(0);
+		-o-transform: translate(-50%) scale(0);
+	}
+	5%,
+	50%,
+	95% {
+		opacity: 1;
+		transform: translate(-50%) scale(1);
+		transform: translate(-50%) scale(1);
+		-moz-transform: translate(-50%) scale(1);
+		-webkit-transform: translate(-50%) scale(1);
+		-o-transform: translate(-50%) scale(1);
+	}
+}
+
+@-o-keyframes fade {
+	0%,
+	100% {
+		opacity: 0;
+		transform: translate(-50%) scale(0);
+		-moz-transform: translate(-50%) scale(0);
+		-webkit-transform: translate(-50%) scale(0);
+		-o-transform: translate(-50%) scale(0);
+	}
+	5%,
+	50%,
+	95% {
+		opacity: 1;
+		transform: translate(-50%) scale(1);
+		-moz-transform: translate(-50%) scale(1);
+		-webkit-transform: translate(-50%) scale(1);
+		-o-transform: translate(-50%) scale(1);
+	}
+}

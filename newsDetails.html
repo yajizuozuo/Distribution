@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>新闻详情</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+    	<style>
+    		.newsContent img{
+    			width: 100%;
+    		}
+    		.newsContent p{
+    			background: transparent!important;
+    		}
+    		.newsContent a{
+    			width: 100%!important;
+    		}
+    		.newsContent a.img-wrap{
+    			display: inline-block!important;
+    			padding-bottom: 0px!important;
+    			overflow: visible!important;
+    		}
+    	</style>
+	</head>
+	<body>
+		<header class="header_common header_common_detail">
+			<img src="img/back.png">
+			<p>新闻详情</p>
+		</header>
+		<div class="commonContainer">
+			<div class="newsDetailTitle bigText textCenter" style="margin-top: 0.5rem;margin-bottom: 0.5rem;"></div>
+			<div class="clearfix colorFont smallText" style="margin-bottom: 0.5rem;">
+				<div class="left">
+					时间:&nbsp;
+					<span class="time"></span>
+				</div>
+				<div class="right">
+					作者:&nbsp;
+					<span >
+					中辰梁品
+					</span>
+				</div>
+			</div>
+			<div class="midText newsContent" style="color: #999;">
+				
+			</div>
+		</div>
+		
+		
+		
+		
+		<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+		<script src="js/alert.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+			
+			$(".header_common").click(function(){
+				$("body").animate({left:"100%"}, 300,function() {
+				    $("body").html("");
+				    window.location.href = "index.html";
+				});
+					
+			})
+			
+			var token = sessionStorage.getItem("token");
+			var search = location.search;
+			var paySsn = ''
+				if(search){
+					var arr = [];
+					search = search.substring(1);
+					arr = search.split("=");
+					/*获取userId*/
+					paySsn = arr[1];
+				}
+				
+				
+			var parm = {
+						id:paySsn
+					}
+					
+					$.ajax({
+						type:"post",
+						url:ajax_url()+"news/getNewsInfo.shtml",
+						async:true,
+						data:parm,
+						success:function(data){
+							console.log(data);
+							var data = eval("("+data+")")
+							if(data.success){
+								if(data.newsInfo){
+									var newsInfo = data.newsInfo;
+									$(".newsDetailTitle").html(newsInfo.title)
+									var time = formatDateTimeJQ(newsInfo.createTime) 
+									$(".time").html(time)
+									$(".newsContent").html(newsInfo.content)
+								}
+							}
+						}
+					})
+			
+			
+			
+		</script>
+		
+		
+	</body>
+</html>

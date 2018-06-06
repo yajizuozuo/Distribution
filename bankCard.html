@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>银行卡管理</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+	</head>
+	<body>
+		<header class="header_common">
+			<img src="img/back.png">
+			<p>银行卡管理</p>
+		</header>
+		<div class="indexHeadPic">
+				<img src="img/memberHead.png" width="100%" />
+		</div>
+		<div class="commonContainer textCenter" style="margin-top: 1rem;" id="content">
+			<!--<div class="bankCardCell commonStyle">
+				<div class="bankCardDetail colorWhite textLeft">
+					<div class="clearfix">
+						<div class="left">
+							<p>中国工商银行</p>
+							<p>6226　8888　****　8888</p>
+						</div>
+						<div class="right">
+							<img src="img/delCard.png">
+						</div>
+					</div>
+				</div>
+			</div>-->
+			<a class="commonStyle colorFont addressBtn" href="addBankcard.html">
+				<img src="img/add.png"><span>添加银行卡</span>
+			</a>
+		</div>
+		<script src="js/jquery-1.10.1.min.js"></script>
+		<script src="js/alert.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+			var token = sessionStorage.getItem("token");
+			/*删除银行卡*/
+			function delBank(id){
+				var confirmer = confirm("删除该银行卡？")
+				if(confirmer){
+					var parm = {
+						id:id
+					}
+					$.ajax({
+						type:"post",
+						url:ajax_url()+"busiUserBankCard/deleteBankCard.shtml?token=" + token,
+						async:true,
+						data:parm,
+						success:function(data){
+							var data = eval("("+data+")")
+//							console.log(data)
+							if(data.success){
+								alert_(data.success);
+								setTimeout(function(){
+									location.reload();
+								},1000)
+							}else{
+								alert_(data.error)
+							}
+						}
+					});
+				}
+			}
+			$(function(){
+				$(".header_common").click(function(){
+					$("body").animate({left:"100%"}, 300,function() {
+				        $("body").html("");
+				        window.location.href = "index.html#3";
+				    });
+					
+				})
+				$.ajax({
+					type:"post",
+					url: ajax_url()+"busiUserBankCard/userBankCardList.shtml?token=" + token,
+					async:true,
+					success:function(data){
+						console.log(data)
+						var data = eval("("+data+")")
+						var cHtml = '';
+						if(data.bankList){
+							var dataRecode = data.bankList
+							for(var index in dataRecode){
+								cHtml += '<div class="bankCardCell commonStyle"><div class="bankCardDetail colorWhite textLeft">';
+								cHtml += '<div class="clearfix"><div class="left"><p>'+ dataRecode[index].bankName +'</p><p>'+ dataRecode[index].bankCardNo +'</p>';
+								cHtml += '</div><div class="right" onclick="delBank(&quot;'+ dataRecode[index].id +'&quot;)"><img src="img/delCard.png"></div></div></div></div>';
+								
+							}
+//							console.log(cHtml);
+							$("#content").prepend(cHtml);
+						}
+					}
+				});
+				
+			})
+		</script>
+	</body>
+</html>

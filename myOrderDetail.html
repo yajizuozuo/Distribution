@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>发货单</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+    	<style>
+    		#deliveryName,#deliveryBillNo{
+    			    line-height: 3.5rem;
+    		}
+    	</style>
+	</head>
+	<body>
+		<header class="header_common header_common_detail">
+			<img src="img/back.png">
+			<p>发货单</p>
+		</header>
+		<div class="deliveryBox">
+			<div style="z-index: 1;"><img src="img/DeliveryOrder.png"  width="100%"/></div>
+			<div class="deliveryBoxBody" id="contentBOX">
+				<div class="deliveryBoxTitle" style="z-index: 2;">
+					<p class="textCenter bigText">发货单</p>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">状态</div>
+					<div class="right colorFont" id="status">待发货</div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">时间</div>
+					<div class="right colorFont" id="createTime">2018-02-05 18:30:00</div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">订单号</div>
+					<div class="right colorFont" id="billNo">s123456789</div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">拿货人账号</div>
+					<div class="right colorFont" id="userID">aaa</div>
+				</div>
+				<!--<div class="clearfix deliveryBoxCell">
+					<div class="left">联系电话</div>
+					<div class="right">1888888888</div>
+				</div>-->
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">级别</div>
+					<div class="right colorFont" id="level">合伙人</div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">拿货数量</div>
+					<div class="right colorFont" id="goodsNum">100盒</div>
+				</div>
+				<!--<div class="clearfix deliveryBoxCell">
+					<div class="left">级别</div>
+					<div class="right">合伙人</div>
+				</div>-->
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">拿货价格</div>
+					<div class="right colorFont" id="price">25元/盒</div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">订单总价</div>
+					<div class="right colorFont" id="totalPrice">2500元</div>
+				</div>
+			</div>
+		</div>
+		<div class="commonBox addressBox" id="deliveryDT">
+				<p class="addressBoxDetail">收货人  <span class="colorFont" id="reciveName">张三</span></p>
+				<p class="addressBoxDetail">联系方式 <span class="colorFont" id="recivePhone">188888888</span> </p>
+				<p class="addressBoxDetail" style="padding-bottom: 0.5rem;">收货地址 <span class="colorFont" id="area">湖南省长沙市开福区顺天黄金海岸大酒店3楼502</span></p>
+		</div>
+		
+		
+		<script type="text/html" id="deliveryDetail">
+			<div class="inputBoxCell clearfix addressInputBox">
+					<div class="left">
+						<img src="img/express.png">
+					</div>
+					<div class="left">
+						<p>快递</p>
+					</div>
+					<div class="left">
+						<input  type="text" id="deliveryName" readonly="readonly" placeholder="请输入发货快递" />
+					</div>
+				</div>
+				<div class="inputBoxCell clearfix addressInputBox">
+					<div class="left">
+						<img src="img/order.png">
+					</div>
+					<div class="left">
+						<p>单号</p>
+					</div>
+					<div class="left">
+						<input  type="text" id="deliveryBillNo" readonly="readonly" placeholder="请输入快递单号" />
+					</div>
+				</div>
+			
+		</script>
+		<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+		<script src="js/alert.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+			
+			$(".header_common").click(function(){
+				$("body").animate({left:"100%"}, 300,function() {
+				    $("body").html("");
+				    window.location.href = "MyOrderManagement.html";
+				});
+					
+			})
+			
+			var token = sessionStorage.getItem("token");
+			var search = location.search;
+			var paySsn = ''
+				if(search){
+					var arr = [];
+					search = search.substring(1);
+					arr = search.split("=");
+					/*获取userId*/
+					paySsn = arr[1];
+				}
+				
+				
+			var parm = {
+						billNo:paySsn
+					}
+					
+					$.ajax({
+						type:"post",
+						url:ajax_url()+"order/getOrderDtl.shtml?token="+ token,
+						async:true,
+						data:parm,
+						success:function(data){
+							console.log(data);
+							var data = eval("("+data+")")
+							if(data.success){
+								if(data.order.deliveryName){
+									$("#deliveryDT").append($("#deliveryDetail").html());
+									$("#deliveryName").val(data.order.deliveryName)
+									$("#deliveryBillNo").val(data.order.deliveryBillNo)
+								}
+								
+								$("#reciveName").html(data.order.reciveName)
+								$("#recivePhone").html(data.order.recivePhone)
+								$("#area").html(data.order.area+data.order.addr)
+								$("#status").html(data.order.status)
+								$("#billNo").html(data.order.billNo)
+								$("#userID").html(data.order.userID)
+								$("#level").html(data.order.level)
+								$("#goodsNum").html(data.order.goodsNum +"盒")
+								$("#price").html(data.order.price)
+								$("#totalPrice").html(data.order.totalPrice)
+								var time = formatDateTimeJQ(data.order.createTime)
+								$("#createTime").html(time)
+								if(data.paySsn){
+									var cHtml = '';
+									cHtml += '<div class="clearfix deliveryBoxCell"><div class="left">付款银行</div><div class="right colorFont" id="totalPrice">'+ data.paySsn.bankName +'</div></div>'
+									cHtml += '<div class="clearfix deliveryBoxCell"><div class="left">付款账号</div><div class="right colorFont" id="totalPrice">'+ data.paySsn.bankCardNo +'</div></div>'
+//									cHtml += '<div class="clearfix deliveryBoxCell"><div class="left">收款银行</div><div class="right colorFont" id="totalPrice">'+ data.paySsn.comBankName +'</div></div>'
+									cHtml += '<div class="clearfix deliveryBoxCell"><div class="left">收款人</div><div class="right colorFont" id="totalPrice">'+ data.paySsn.comBankAccount +'</div></div>'
+									$("#contentBOX").append(cHtml)
+								}
+							}
+						}
+					})
+			
+			
+			
+		</script>
+		
+		
+	</body>
+</html>

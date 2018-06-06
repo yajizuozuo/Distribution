@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>奖金详情</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+    	<link rel="stylesheet" href="css/dropload.css" />
+	</head>
+	<body>
+		<header class="header_common header_common_detail">
+			<img src="img/back.png">
+			<p>奖金详情</p>
+		</header>
+		<!--<div class="indexHeadPic">
+				<img src="img/memberHead.png" width="100%" />
+		</div>-->
+		<div class="commonContainer textCenter commonBox mismText" >
+			<div class="clearfix bonusDetailCell" style="padding-top: 1rem;padding-bottom: 2rem;">
+				<div class="left textCenter" style="width: 45%;">
+					<p class="bigText colorCommon" id="totalGoods">0</p>
+					<p class="smallText">当月总拿货盒数</p>
+				</div>
+				<div class="left textCenter" style="width: 10%;"><span style="display: inline-block;width: 1px;border-left: 1px solid #eee;height: 3rem;"></span></div>
+				<div class="right textCenter" style="width: 45%;">
+					<p class="bigText colorCommon" id="totalAmt">0</p>
+					<p class="smallText">当月总拿货价格</p>
+				</div>
+			</div>
+			<div class="clearfix bonusDetailCell twoBox">
+				<div class="left" id="monthDate"></div>
+				<div class="right" id="status"></div>
+			</div>
+			<div class="clearfix bonusDetailCell twoBox">
+				<div class="left">当月获得总奖金</div>
+				<div class="right colorFont" id="bonus">0</div>
+			</div>
+			<div class="clearfix bonusDetailCell twoBox">
+				<div class="left">应付下级奖金</div>
+				<div class="right colorFont" id="downBonus">0</div>
+			</div>
+			<div class="clearfix bonusDetailCell twoBox">
+				<div class="left">实际获得</div>
+				<div class="right colorFont" id="bonusreal">0</div>
+			</div>
+			<div class="content">
+				<!--<div class="threeBox" style="margin-bottom: 1px;">
+					<p class="textLeft colorFont">2018-3-1 16:30:22</p>
+					<div class="clearfix">
+						<div class="left textLeft smallText" style="width: 50%;">
+							<p>姓名<span class="colorFont">张三</span></p>
+							<p>级别<span class="colorFont">合伙人</span></p>
+							<p>电话<span class="colorFont">16866666</span></p>
+						</div>
+						<div class="left" style="width: 25%;">
+							<p class="midText">200000</p>
+							<p class="smallText">拿货总价</p>
+						</div>
+						<div class="left" style="width: 25%;">
+							<p class="midText">200000</p>
+							<p class="smallText">应发奖金</p>
+						</div>
+					</div>
+				</div>-->
+				
+			</div>
+			
+		</div>
+		<script src="js/jquery-1.10.1.min.js"></script>
+		<script src="js/alert.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script src="js/dropload.min.js"></script>
+		<script>
+			$(".header_common").click(function(){
+				$("body").animate({left:"100%"}, 300,function() {
+				    $("body").html("");
+				    window.location.href = "MonthlyBonusInquiries.html";
+				});
+					
+			})
+			
+			function getUrlVars(url) {  
+			    var hash;  
+			    var myJson = {};  
+			    var hashes = url.slice(url.indexOf('?') + 1).split('&');  
+			    for (var i = 0; i < hashes.length; i++) {  
+			        hash = hashes[i].split('=');  
+			        myJson[hash[0]] = hash[1];  
+			    }  
+			    return myJson;  
+			}  
+			
+			
+			var token = sessionStorage.getItem("token");
+			var search = getUrlVars(location.search);
+			console.log(search)
+			$("#status").html(decodeURIComponent(search.status))
+			$("#bonus").html(search.bonus)
+			$("#downBonus").html(search.downBonus)
+			$("#monthDate").html(search.id)
+			$("#bonusreal").html(search.bonus-search.downBonus);
+			
+			
+			
+//			$(".content").html("");
+			var parm = {
+				month:search.id,
+				pageSize:8,
+				pageNow:0
+			}
+			$('.content').dropload({
+		        scrollArea : window,
+		        domDown : {
+		            domClass   : 'dropload-down',
+		            domRefresh : '<div class="dropload-refresh">↑上拉加载</div>',
+		            domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+		            domNoData  : '<div class="dropload-noData">暂无数据</div>'
+		        },
+				loadDownFn : function(me){
+	            	parm.pageNow++;
+	            	// 拼接HTML
+					var cHtml = "";
+					$.ajax({
+						type:"post",
+						url:ajax_url() +"busiBonus/getUserBonusMonthList.shtml?token=" +token,
+						async:true,
+						data:parm,
+						dataType: 'json',
+						success:function(data){
+//							var data = eval("("+data+")");
+							if(data.achieveMonth){
+								$("#totalGoods").html(data.achieveMonth.totalGoods)
+								$("#totalAmt").html(data.achieveMonth.totalAmt)
+							}
+							if(data.error){
+								window.location.href = "login.html";
+							}else if(data.bonusMonthList.records){
+								var records = data.bonusMonthList.records
+								if(records.length > 0){
+									for(var index in records){
+										
+										cHtml += '<div class="threeBox" style="margin-bottom: 1px;"><p class="textLeft colorFont">'+ records[index].month +'</p>';
+										cHtml += '<div class="clearfix"><div class="left textLeft smallText" style="width: 50%;"><p>姓名:&nbsp;<span class="colorFont">'+ records[index].userName +'</span></p>'
+										
+										cHtml += '<p>级别:&nbsp;<span class="colorFont">'+ records[index].level +'</span></p><p>电话:&nbsp;<span class="colorFont">'+ records[index].phone +'</span></p>'
+										cHtml += '</div><div class="left" style="width: 25%;"><p class="midText colorCommon">'+ parseInt(records[index].totalAmt) +'</p><p class="smallText">拿货总价</p></div>'
+										cHtml += '<div class="left" style="width: 25%;"><p class="midText colorCommon">'+ records[index].bonus +'</p><p class="smallText">应发奖金</p></div></div>'
+										cHtml += '<div class="clearfix"><div class="left textLeft smallText"><p>银行卡号:&nbsp;<span class="colorFont">'+ records[index].bankCardNo +'</span></p></div></div>'
+									}
+									$(".content").prepend(cHtml);
+									me.resetload();
+								}else if(records.length == 0){
+									 // 锁定
+					                me.lock();
+					                // 无数据
+					                me.noData();
+					                me.resetload();
+					           }
+							}
+						},
+		                error: function(xhr, type){
+		                    alert_('请求错误');
+		                    // 即使加载出错，也得重置
+		                    me.resetload();
+		                }
+					});
+			},
+	        threshold : 50
+	    });
+			
+			
+			
+		</script>
+		
+		
+	</body>
+</html>

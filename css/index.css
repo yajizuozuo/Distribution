@@ -1,0 +1,595 @@
+
+
+/*content*/
+#content{
+	padding-bottom: 3.5rem;
+	width: 100%;
+	height: 100%;
+}
+.commonContainer{
+	width: 90%;
+	margin: 0 auto;
+}
+/*index*/
+.indexHead{
+	position: relative;
+}
+.indexHeadTitle{
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 100%;
+}
+.indexNews{
+	background: #fff;
+	border-radius: 0.2rem;
+	padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.indexNewsCell{
+	height: 4rem;
+	margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+.indexNewsCell:last-child{
+	border-bottom: none;
+}
+/*distributionContent*/
+.distributionBox{
+	background: url(../img/distributionHead.png) no-repeat;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+}	
+.container{
+	padding: 0 5%;
+	padding-bottom: 3.5rem;
+}
+
+.distributionTj{
+	padding: 0 10%;
+	padding-top: 7.5rem;
+}
+.distributionTj .left,.distributionTj .right{
+	width: 50%;
+	text-align: center;
+}
+.distributionTz{
+	padding-top: 5.5rem;
+}
+.distributionTzCell{
+	width: 33%;
+	text-align: center;
+	margin-bottom: 1.5rem;
+}
+.distributionTzCell .distributionTzPic{
+	display: inline-block;
+	width: 4rem;
+	height: 4rem;
+	border-radius: 50%;
+	background: #fff;
+}
+.distributionTzCell .distributionTzPic img{
+	transform: translateY(50%);
+    width: 2rem;
+    /*margin-top: -1rem;*/
+}
+.distributionTzCell p{
+	margin-top: 0.5rem;
+}	
+
+/*memberConter*/
+.memberBox{
+	background: url(../img/memberHead.png) no-repeat;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+}
+.memberBoxTitle{
+	padding: 1rem;
+}
+.memberBoxHead{
+	border-radius: 0.25rem;
+	border: 1px solid rgba(165, 129, 129, 0.6);
+    width: 92%;
+    margin-left: 2.5%;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.memberBoxHead .memberBoxHeadCell{
+	padding-left: 1rem;
+	padding-bottom: 0.2rem;
+}
+.memberBoxHead .memberBoxHeadCell:last-child{
+	padding-bottom: 0rem;
+}
+
+
+.memberBoxHeadCellPic,.memberBoxBodyCellPic {
+	width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: #00baad;
+    text-align: center;
+}
+.memberBoxHeadCellPic img,.memberBoxBodyCellPic img{
+	width: 1rem;
+    margin-top: 0.5rem;
+}
+.memberBoxHeadCellWo{
+	line-height: 2rem;
+	margin-left: 1rem;
+}
+
+.memberBoxBody{
+	border-radius: 0.25rem;
+	background: #fff;
+	width: 95%;
+    margin: 25% auto;/*屏幕兼容性判断*/
+}
+.memberBoxBodyCell{
+	height: 4rem;
+	border-bottom: 1px solid #eee;
+	margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+.memberBoxBodyCell:last-child{
+	border-bottom: none;
+}
+.memberBoxBodyCellPic{
+	margin-top: 1rem;
+}
+.memberBoxBodyCell .left p{
+	line-height: 1.2rem;
+	/*overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 70%;*/
+}
+.memberBoxBodyCell .left p:first-child{
+	margin-top: 0.7rem;
+}
+.memberBoxBodyCell .right{
+	line-height: 4rem;
+}
+
+/*stock*/
+.stockBtn{
+	position: fixed;
+	left: 0;
+	bottom: 3.5rem;
+	border: none;
+	background: #0CA99E;
+	color: #fff;
+	width: 100%;
+	height: 3rem;
+	font-size: 1.6rem;
+}
+
+/*footer*/
+
+footer {
+	display: flex;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 3.5rem;
+	background: #fff;
+	border-top: 1px solid rgb(232, 232, 232);
+}
+
+footer div {
+	flex: 1;
+	text-align: center;
+	position: relative;
+}
+
+footer div p {
+	position: absolute;
+	left: 50%;
+	width: 4.25rem;
+	height: 4.25rem;
+	transform: translateX(-50%) scale(0.6);
+	top: -0.55rem;
+}
+
+footer div span {
+	width: 100%;
+	height: 30%;
+	display: inline-block;
+	position: absolute;
+	bottom: 0.25rem;
+	font-size: 1.25rem;
+	transform: translateX(-50%) scale(0.6);
+	color: #666;
+}
+
+.to_index p {
+	background: url(../img/index.png) no-repeat center;
+}
+
+.to_stock p {
+	background: url(../img/stock.png) no-repeat center;
+}
+
+.to_distribution p {
+	background: url(../img/distribution.png) no-repeat center;
+}
+
+.to_membercenter p {
+	background: url(../img/member.png) no-repeat center;
+}
+
+.footer_active.to_index p {
+	background: url(../img/indexActive.png) no-repeat center;
+}
+
+.footer_active.to_stock p {
+	background: url(../img/stockActive.png) no-repeat center;
+}
+
+.footer_active.to_distribution p {
+	background: url(../img/distributionActive.png) no-repeat center;
+}
+
+.footer_active.to_membercenter p {
+	background: url(../img/memberActive.png) no-repeat center;
+}
+
+footer div.footer_active span {
+	color: #0ca99e;
+}
+
+
+
+/*commonHead*/
+.header_common {
+	height: 8%;
+	width: 100%;
+	text-align: center;
+	display: table;
+	position: absolute;
+	z-index: 2;
+}
+.header_common p {
+	color: #fff;
+	vertical-align: middle;
+	display: table-cell;
+	font-size: 1.2rem;
+}
+.header_common img {
+	position: absolute;
+	width: 10%;
+	height: 3.5rem;
+	transform: translateY(-50%) scale(0.3);
+	left: 0;
+	top: 50%;
+}
+.header_common_detail{
+	background: #0CA99E;
+	position: relative;
+}
+
+.btnBox{
+	
+}
+.commonStyle{
+	display: inline-block;
+	background: #fff;
+	border-radius: 0.2rem;
+	margin-bottom: 1rem;
+}
+.commonBox{
+	background: #fff;
+	border-radius: 0.2rem;
+	margin-bottom: 1rem;
+}
+.bonusDetailCell{
+	border-bottom: 1px solid #eee;
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+}
+.twoBox{
+	line-height: 2.5rem;
+}
+.threeBox{
+	margin-top: 1rem;
+	margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    background: #f6f6f6;
+}
+.addressBtn{
+	padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    width: 85%;
+	height: 3rem;
+	line-height: 3rem;
+}
+.addressBtn img{
+	width: 1.5rem;
+	margin-top: 0.75rem;
+}
+.addressBtn span{
+	vertical-align: top;
+}
+.addressCell{
+	padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    width: 85%;
+}
+.addressDetail{
+	border-bottom: 1px solid #eee;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+.addressCz{
+	padding-top: 0.5rem;
+	padding-bottom: 0rem;
+}
+.addressCz{
+	height: 2.5rem;
+}
+.addressCz img{
+	width: 1.8rem;
+}
+.addressCz span{
+	vertical-align: top;
+}
+.bankCardCell{
+	background: url(../img/bankCardBg.png) no-repeat center center;
+	background-size: cover;
+	width: 90%;
+	border-radius: 0.5rem;
+}
+.bankCardDetail{
+	padding: 0.8rem;
+}
+.bankCardDetail img{
+	transform: scale(0.8);
+}
+.commonHeadPic{
+	position: relative;
+}
+.absoBox{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50% , -50%);
+}
+button.commonBtn{
+	outline: none;
+}
+
+.formBox .inputBox{
+	background: #fff;
+	border-radius: 0.5rem;
+	padding: 0.5rem;
+	
+}
+.inputBoxCell{
+	line-height: 3.5rem;
+}
+.bankCardInput .inputBoxCell{
+	line-height: 3rem;
+}
+.inputBoxCell:not(:last-child){
+	border-bottom: 1px solid #eee;
+}
+.inputBoxCell img{
+	vertical-align: middle;
+	transform: scale(0.8);
+}
+.inputBoxCell input{
+	border: none;
+	outline: none;
+	padding-left: 0.5rem;
+	font-size: 1rem;
+}
+.inputSpan{
+	padding: 0.2rem 0.5rem;
+    background: #0CA99E;
+    color: #fff;
+    border-radius: 0.2rem;
+}
+.inputBtn{
+	border: none;
+	outline: none;
+}
+.spanTips{
+	display: inline-block;
+	background: #0CA99E;
+	border-radius: 50%;
+	color: #f6f6f6;
+	width: 1.5rem;
+	height: 1.5rem;
+	text-align: center;
+}
+
+.deliveryBox{
+	background: url(../img/DeliveryOrder.png) no-repeat top left;
+	background-size: contain;
+	width: 100%;
+}
+.deliveryBoxBody{
+	padding: 0 5%;
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+	background: #fff;
+	margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+.deliveryBoxTitle{
+	margin-top: -16%;
+	line-height: 3rem;
+}
+/*.deliveryBoxTitle p{
+	background: url(../img/LOGO.png) no-repeat center right;
+	background-size:2rem 2rem; 
+}*/
+.deliveryBoxTitle,.deliveryBoxCell{
+	border-bottom: 1px solid #eee;
+}
+.deliveryBoxCell{
+	line-height: 2.5rem;
+}
+.addressBox{
+	width: 95%;
+	margin: 0 auto;
+	margin-bottom: 1.5rem;
+}
+.addressBox .addressBoxDetail{
+	padding-top: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+.addressLast{
+	padding-bottom: 0.5rem;
+	border-bottom: 1px solid #eee;
+}
+.addressInputBox{
+	padding-left: 0.5rem;
+}
+.indexHeadPic{
+	position: relative;
+}
+.DataStatistics{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	width: 90%;
+	/*height: 4rem;*/
+	/*background: #eee;*/
+	border: 1px solid #bbb;
+	border-radius: 0.5rem;
+}
+.DataStatisticsBox{
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+	padding: 0.5rem;
+	border-bottom: 1px solid #bbb;
+	position: relative;
+	line-height: 2rem;
+}
+.DataStatisticsBox img{
+	position: absolute;
+	right: 1rem;
+	top: 50%;
+    transform: translateY(-50%) scale(0.6);
+}
+.DataStatistics .clearfix{
+	padding: 1rem;
+}
+.DataStatistics .left,.DataStatistics .right{
+	width: 48%;
+}
+.spanbox{
+    width: 0;
+    height: 1.2rem;
+    border-left: 1px solid #ccc;
+}
+.dataInput{
+	background-color:transparent; 
+	FILTER: alpha(opacity=0); /*androd*/  
+    appearance:none;  /*下拉框去掉右侧图标*/  
+    -moz-appearance:none;  
+    -webkit-appearance:none;
+}
+/*.dataInput:before{content:attr(placeholder);*/
+.aBtn{
+	padding: 0.2rem 0.5rem;
+	display: inline-block;
+	border: 1px solid #00BAAD;
+	border-radius: 0.2rem;
+}
+
+.bankCardChoose{
+	position: absolute;
+	top: 65%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	width: 100%;
+	height: 75%;
+}
+.customerStatBox{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	height: 8rem;
+	width: 8rem;
+	border-radius: 50%;
+	border: 1px solid #aaa;
+}
+.customerStatBox p:first-child{
+	margin-top: 3rem;
+}
+.myCustomerCell{
+	margin-top: 1rem;
+}
+.myCustomerDetail{
+	margin: 0.5rem;
+}
+.registertime{
+	line-height: 2.5rem;
+	border-bottom: 1px solid #eee;
+}
+.myCustomerDetail .clearfix{
+	padding-bottom: 1rem;
+	padding-top: 1rem;
+}
+
+
+/*step样式*/
+.step{
+	width: 21rem;
+	margin: 1rem auto;
+}
+.step span{
+	width: 3rem;
+	height: 3rem;
+	line-height: 3rem;
+	background: rgb(221,221,221);
+	border-radius: 3rem;
+	display: inline-block;
+	color: #fff;
+	position: relative;
+}
+.step span:not(:last-child){
+	margin-right: 1.5rem;
+}
+.step .stepbox::after{
+	content: '';
+	position: absolute;
+	width: 3rem;
+	height: 0.2rem;
+	top: 50%;
+	background: rgb(221,221,221);
+}
+.step span.stepCellActive{
+	background:#0CA99E;
+}
+.step span.stepCellActive::after{
+	background:#0CA99E;
+}
+
+
+
+.newsTitle{
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.newsBody{
+	overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}

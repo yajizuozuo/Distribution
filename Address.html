@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>收货地址管理</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+	</head>
+	<body>
+		<header class="header_common">
+			<img src="img/back.png">
+			<p>收货地址管理</p>
+		</header>
+		<div class="indexHeadPic">
+				<img src="img/memberHead.png" width="100%" />
+		</div>
+		<div class="commonContainer textCenter" id="content" style="margin-top: 1rem;">
+			
+			
+			<a class="commonStyle colorFont addressBtn" href="addAddress.html">
+				<img src="img/add.png"><span>添加收货地址</span>
+			</a>
+		</div>
+		<script src="js/jquery-1.10.1.min.js"></script>
+		<script src="js/alert.js"></script>
+		<script>
+			var token = sessionStorage.getItem("token");
+			function chooseDefaltAdd(id){
+				var confirmer = confirm("将该地址设为默认地址？")
+				if(confirmer){
+					var parm = {
+						id:id
+					}
+					$.ajax({
+						type:"post",
+						url:ajax_url()+"busiUserAddr/setDefaultAddr.shtml?token=" + token,
+						async:true,
+						data:parm,
+						success:function(data){
+							var data = eval("("+data+")")
+//							console.log(data)
+							if(data.success){
+								alert_(data.success);
+								setTimeout(function(){
+									location.reload();
+								},1000)
+							}else{
+								alert_(data.error)
+							}
+						}
+					});
+				}
+			}
+			
+			function delAddr(id){
+				var confirmer = confirm("删除该地址？")
+				if(confirmer){
+					var parm = {
+						id:id
+					}
+					$.ajax({
+						type:"post",
+						url:ajax_url()+"busiUserAddr/deleteAddr.shtml?token=" + token,
+						async:true,
+						data:parm,
+						success:function(data){
+							var data = eval("("+data+")")
+//							console.log(data)
+							if(data.success){
+								alert_(data.success);
+								setTimeout(function(){
+									location.reload();
+								},1000)
+							}else{
+								alert_(data.error)
+							}
+						}
+					});
+				}
+			}
+			$(function(){
+				$(".header_common").click(function(){
+					$("body").animate({left:"100%"}, 300,function() {
+				        $("body").html("");
+				        window.location.href = "index.html#3";
+				    });
+					
+				})
+				$.ajax({
+					type:"post",
+					url: ajax_url()+"busiUserAddr/userAddrList.shtml?token=" + token,
+					async:true,
+					success:function(data){
+						var data = eval("("+data+")")
+						var cHtml = '';
+						if(data.addrList){
+							var dataRecode = data.addrList
+							for(var index in dataRecode){
+								cHtml += '<div class="addressCell commonStyle"><div class="addressDetail">';
+								cHtml += '<div class="clearfix"><div class="left">'+ dataRecode[index].name +'</div>';
+								cHtml += '<div class="right">'+ dataRecode[index].phone +'</div></div>';
+								cHtml += '<p class="textLeft colorFont" style="margin-top: 0.5rem;">'+ dataRecode[index].area + dataRecode[index].addr +'</p></div>';
+								cHtml += '<div class="addressCz"><div class="clearfix"><div class="left">';
+								
+								if(dataRecode[index].isDefault){
+									cHtml += '<img src="img/choose.png"/><span style="line-height: 1.8rem;">&nbsp;默认地址</span></div>'
+								}else{
+									cHtml += '<img src="img/notChoose.png" onclick="chooseDefaltAdd(&quot;'+ dataRecode[index].id +'&quot;)" /><span>&nbsp;默认地址</span></div>'
+								}
+								cHtml += '<div class="right" onclick="delAddr(&quot;'+ dataRecode[index].id +'&quot;)"><img src="img/del.png"  /></div></div></div></div>'
+								
+							}
+//							console.log(cHtml);
+							$("#content").prepend(cHtml);
+						}
+					}
+				});
+				
+			})
+		</script>
+	</body>
+</html>

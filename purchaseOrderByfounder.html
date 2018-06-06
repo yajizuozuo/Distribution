@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>进货下单</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/swiper.min.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+    	<style>
+    		.addressBox{margin-top: 1rem;}
+    		.deliveryBoxCell:last-child{border: none;}
+    		.choose_bank{position: relative;margin: 1rem;padding-top: 0.5rem;margin-bottom: 0rem;}
+    		.choose_bank_border{border-bottom: 1px solid #eee;}
+    		.choose_bank .clearfix{    padding-bottom: 0.5rem;}
+			.choose_bank .left{width: 80%;}
+			.choose_bank .right{width: 20%;}
+			.choose_bank_btn img,.choose_address img{transform: scale(0.6);display: inline-block;}
+			.choose_bank .bank_list,.choose_bank .address_list{position: initial;top: 2.25rem;background: #fff;width: 128%;margin-left: -0.25rem;display: none;}
+			.choose_bank .bank_list li,.choose_bank .address_list li{padding-left: 0.35rem;padding-top: 0.5rem;}
+			.swiper-slide{
+				background: url(img/bankCardBg.png) no-repeat;
+				background-position: center;
+      			background-size: cover;
+      			width: 60%;
+      			height: 60%;
+      			border-radius: 0.5rem;
+			}
+			.swiper-slide p:first-child{
+				padding-top: 1.5rem;
+			}
+			.addressDetailBox,.bankCardBox{
+			    padding-left: 1rem;
+			    padding-right: 1rem;
+			}
+			.displayStyleAdd,.displayStyleBank{display: none;}
+			.choose_bank.border_choose{
+				border-bottom: 1px solid #eee;
+			}
+			/*placeholder 样式*/
+			:-moz-placeholder
+			{
+			  color: #0575F2;
+			}
+			::-moz-placeholder
+			{
+			  color: #0575F2;
+			}
+			:-ms-input-placeholder
+			{
+			   color: #0575F2;
+			}
+			::-webkit-input-placeholder
+			{
+			    color: #0575F2;
+			}
+
+    	</style>
+	</head>
+	<body>
+		<header class="header_common">
+			<img src="img/back.png">
+			<p>进货下单</p>
+		</header>
+		<div class="indexHeadPic">
+			<img src="img/memberHead.png" width="100%" />
+			<div class="bankCardChoose swiper-container">
+			    <div class="swiper-wrapper" id="mybankcardBox">
+			    </div>
+			</div>
+		</div>
+		<!--地址信息-->
+		<div class="commonBox addressBox midText">
+			<div class="choose_bank">
+				<div class="clearfix">
+					<div class="left">
+						<span class="color_gray choosed_paybankcard">地址选择</span>
+						<ul class="address_list mismText colorFont">
+							<!--<li>您还未添加地址，请先添加地址</li>-->
+						</ul>
+					</div>
+					<div class="right choose_address choose_paybank textRight colorFont "><span><img src="img/down.png"  ></span></div>
+				</div>
+			</div>
+			<div class="addressDetail displayStyleAdd" >
+				<p class="addressDetailBox colorFont"></p>
+			</div>
+		</div>
+		<!--公司银行卡信息-->
+		<div class="commonBox addressBox midText">
+			<div class="choose_bank ">
+				<div class="clearfix">
+					<div class="left">
+						<span class="color_gray choosed_paybankcard">收款银行选择</span>
+						<ul class="bank_list mismText colorFont">
+							<!--<li>您还未添加地址，请先添加地址</li>-->
+						</ul>
+					</div>
+					<div class="right choose_bank_btn choose_paybank textRight colorFont "><span><img src="img/down.png"  ></span></div>
+				</div>
+			</div>
+			<div class="addressDetail displayStyleBank" >
+				<p class="bankCardBox colorFont"></p>
+			</div>
+		</div>
+			<div class="deliveryBoxBody midText">
+				<!--<div class="clearfix deliveryBoxCell">
+					<div class="left">上级姓名</div>
+					<div class="right">待发货</div>
+				</div>-->
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">账号</div>
+					<div class="right colorFont" id="userID"></div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">姓名</div>
+					<div class="right colorFont" id="userName"></div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">我的级别</div>
+					<div class="right colorFont">联合创始人</div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">拿货价格</div>
+					<div class="right colorFont">23</div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">拿货数量</div>
+					<div class="right">
+						<input id="goodsNum" class="inputBox colorFont" placeholder="请输入拿货数" onblur="this.type='text'"  type="text" style="text-align: right;border: none;outline: none;font-size: 1rem;color: #0575F2;">
+					</div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">最低拿货数量</div>
+					<div class="right colorFont">1000盒</div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">总价</div>
+					<div class="right colorFont" id="totalPrice"></div>
+				</div>
+				
+			</div>
+			<div class="commonContainer">
+				<button class="commonBtn btnBigSize colorWhite founderBtn">立即下单</button>
+			</div>
+			
+			<script src="js/jquery-1.10.1.min.js"></script>
+			<script src="js/alert.js"></script>
+			<!--<script src="js/common.js"></script>-->
+			<script type="text/javascript" src="js/swiper.min.js" ></script>
+			<script>
+				var token = sessionStorage.getItem("token");
+				var userName = sessionStorage.getItem("userName");
+				var userID = sessionStorage.getItem("userID");
+				
+				if(userName){
+					$("#userName").html(userName);
+					$("#userID").html(userID);
+				}else{
+					alert_('您还未实名认证，请先实名！');
+					setTimeout(function(){
+						window.location.href = "index.html#3"
+					},1000)
+				}
+				
+				$("#goodsNum").on('input',function(){
+					this.type = "number"
+					var goodsNum = parseInt($("#goodsNum").val());
+					$("#totalPrice").html(goodsNum*23);
+				})
+				
+				/*获取我的银行卡信息*/
+				$.ajax({
+					type:"post",
+					url: ajax_url()+"busiUserBankCard/userBankCardList.shtml?token=" + token,
+					async:true,
+					success:function(data){
+//						console.log(data)
+						var data = eval("("+data+")")
+						var cHtml = '';
+						if(data.bankList){
+							var dataRecode = data.bankList
+							for(var index in dataRecode){
+								cHtml += '<div class="swiper-slide" data-bankId="'+ dataRecode[index].id +'">';
+								cHtml += '<p class="midText colorWhite textCenter">'+ dataRecode[index].bankName +' </p>';
+								cHtml += '<p class="midText colorWhite textCenter">'+ dataRecode[index].bankCardNo +' </p></div>';
+							}
+//							console.log(cHtml);
+							$("#mybankcardBox").append(cHtml);
+							
+							var swiper = new Swiper('.swiper-container', {
+						      effect: 'coverflow',
+						      grabCursor: true,
+						      centeredSlides: true,
+						      slidesPerView: 'auto',
+						      coverflowEffect: {
+						        rotate: 50,
+						        stretch: 0,
+						        depth: 100,
+						        modifier: 1,
+						        slideShadows : true,
+						      }
+						    });
+							/*mySwiper.activeIndex   获取当前页*/
+							
+						}else $("#mybankcardBox").html("<p class='colorWhite'>请先添加银行卡</p>")
+					}
+				});
+				/*获取地址信息*/
+				$.ajax({
+					type:"post",
+					url: ajax_url()+"busiUserAddr/userAddrList.shtml?token=" + token,
+					async:true,
+					success:function(data){
+						var data = eval("("+data+")")
+						var cHtml = '';
+						if(data.addrList){
+							var dataRecode = data.addrList
+							for(var index in dataRecode){
+								cHtml += '<li data-id="'+ dataRecode[index].id +'">'+ dataRecode[index].name + '　' + dataRecode[index].phone + '　' + dataRecode[index].area + dataRecode[index].addr+'</li>';
+							}
+//							console.log(cHtml);
+							$(".address_list").append(cHtml);
+						}else{
+							$(".address_list").html("<li class='colorFont'>您还未添加地址，请先添加地址</li>")
+						}
+					}
+				});
+				/*获取公司银行卡信息*/
+				$.ajax({
+					type:"post",
+					url: ajax_url()+"comBankCard/comBankCardList.shtml",
+					async:true,
+					success:function(data){
+						console.log(data)
+						var data = eval("("+data+")")
+						var cHtml = '';
+						if(data.comBankList){
+							var dataRecode = data.comBankList
+							for(var index in dataRecode){
+								cHtml += '<li data-id="'+ dataRecode[index].id +'">'+ dataRecode[index].bankAccount + '　' + dataRecode[index].bankName + '　' + dataRecode[index].bankCardNo +'</li>';
+							}
+//							console.log(cHtml);
+							$(".bank_list").append(cHtml);
+						}
+					}
+				})
+				
+				$(".header_common").click(function(){
+					$("body").animate({left:"100%"}, 300,function() {
+				        $("body").html("");
+				        window.location.href = "index.html#0";
+				    });
+					
+				})
+				
+				
+				var bankID="";
+				var comBankID="";
+				var addrID="";
+				
+				/*获取地址信息*/
+				$(".choose_address").click(function(){
+					$(".address_list").toggle();
+					var $this = $(this).parents(".choose_bank");
+					$(".address_list li").click(function(e){
+						addrID = $(e.target).data("id")
+						if(addrID){
+							var aHtml = $(e.target).html()
+							$(".addressDetailBox").html(aHtml);
+							$(".displayStyleAdd").show();
+						}
+						$(".address_list").hide();
+						$this.addClass("border_choose")
+					})
+				})
+				
+				/*获取公司银行卡信息*/
+				$(".choose_bank_btn").click(function(){
+					$(".bank_list").toggle();
+					var $this = $(this).parents(".choose_bank");
+					$(".bank_list li").click(function(e){
+						comBankID = $(e.target).data("id")
+						if(comBankID){
+							var aHtml = $(e.target).html()
+							$(".bankCardBox").html(aHtml);
+							$(".displayStyleBank").show();
+						}
+						$(".bank_list").hide();
+						$this.addClass("border_choose")
+					})
+				})
+				
+				
+				$(".founderBtn").click(function(){
+					$(".founderBtn").attr("disabled","disabled")
+					bankID = $("#mybankcardBox > .swiper-slide-active").data("bankid")
+					var goodsNum = $("#goodsNum").val();
+					var regExp = /^[1-9]\d*$/; 
+					if(!bankID){
+						alert_("请选择付款银行卡号")
+						$(".founderBtn").removeAttr("disabled")
+						return false;
+					}
+					if(!comBankID){
+						alert_("请选择收款银行卡号")
+						$(".founderBtn").removeAttr("disabled")
+						return false;
+					}
+					if(!addrID){
+						alert_("请选择收货地址")
+						$(".founderBtn").removeAttr("disabled")
+						return false;
+					}
+					if(!goodsNum){
+						alert_("请输入拿货数量")
+						$(".founderBtn").removeAttr("disabled")
+						return false;
+					}else if(!regExp.test(goodsNum)){
+						alert_("请输入数字")
+						$(".founderBtn").removeAttr("disabled")
+						return false;
+					}
+					
+					if(parseInt(goodsNum)<1000){
+						alert_("拿货数量最少为1000")
+						$(".founderBtn").removeAttr("disabled")
+						return false;
+					}else if(parseInt(goodsNum)>10000000){
+						alert_("拿货数量最多为1000万")
+						$(".founderBtn").removeAttr("disabled")
+						return false;
+					}
+					var parm = {
+							bankID: bankID,
+							comBankID:comBankID,
+							addrID:addrID,
+							goodsNum:goodsNum
+						}
+					
+					$.ajax({
+						type:"post",
+						url:ajax_url()+"order/genCoFounderOrder.shtml?token=" + token,
+						async:true,
+						data:parm,
+						success:function(data){
+							console.log(data)
+		    				var data = eval("("+data+")")
+							console.log(data)
+							if(data.success){
+								alert_(data.success);
+								setTimeout(function(){
+									window.location.href = "index.html"
+								},1000)
+							}else{
+								alert_(data.error);
+			      				$(".add_bankNo").removeAttr("disabled");
+		    				}
+						}
+					});
+					
+				})
+				
+			</script>
+	</body>
+</html>

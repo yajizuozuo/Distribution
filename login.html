@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>登陆</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+		<style>
+			.welcome{text-align:center;color: #fff;margin-bottom: 1rem;width:100%;}
+			.absoBox{width:60%;}
+		</style>
+	</head>
+	<body>
+		<div class="commonHeadPic textCenter">
+				<img src="img/memberHead.png" width="100%" />
+				<div class="absoBox" id="picBox">
+					<img src="img/memberLogin.png">
+					<p class="welcome">欢迎来到中辰梁品管理系统</p>
+				</div>
+		</div>
+		<div class="commonContainer textCenter" style="margin-top: 1rem;" id="contentBox">
+			
+		</div>
+		<script type="text/html" id="member_login">
+			
+			<div class="formBox">
+				<div class="inputBox">
+					<div class="inputBoxCell clearfix">
+						<div class="left">
+							<img src="img/memberId.png">
+						</div>
+						<div class="left">
+							<input  id="userID" type="text" placeholder="请输入账号" />
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						<div class="left">
+							<img src="img/psw.png">
+						</div>
+						<div class="left">
+							<input  id="passWord" type="password" placeholder="请输入密码" />
+						</div>
+					</div>
+				</div>
+				<p class="textRight colorBlue" style="margin-top: 0.5rem;margin-bottom: 0.5rem;">
+					<a class="colorBlue" href="ForgetPsw.html">忘记密码？</a>
+				</p>
+				<button class="commonBtn btnBigSize colorWhite textCenter" onclick="busiUserLogin()">登陆</button>
+				<p class="colorBlue textCenter" style="margin-top: 1rem;" onclick="phone_login()">手机号登陆</p>
+			</div>
+		</script>
+		<script type="text/html" id="phone_login">
+			<div class="formBox">
+				<div class="inputBox">
+					<div class="inputBoxCell clearfix">
+						<div class="left">
+							<img src="img/phone.png">
+						</div>
+						<div class="left">
+							<input  type="text" id="phone" placeholder="请输入手机号" />
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						<div class="left">
+							<img src="img/psw.png">
+						</div>
+						<div class="left">
+							<input  type="text" id="veriCode" placeholder="请输入动态密码"  style="width: 7rem;"/>
+						</div>
+						<div class="right">
+							<input type="button"  onclick="settime(this)" style="font-size:0.8rem;" class="inputSpan inputBtn btn_Code" value="获取动态密码" >
+						</div>
+					</div>
+				</div>
+				<p class="textRight colorBlue" style="margin-top: 0.5rem;margin-bottom: 0.5rem;">
+					<a class="colorBlue" href="ForgetPsw.html">忘记密码？</a>
+				</p>
+				<button class="commonBtn btnBigSize colorWhite textCenter login_btn" onclick="loginByPhone()">登陆</button>
+				<p class="colorBlue textCenter" style="margin-top: 1rem;" onclick="init()">账号登陆</p>
+			</div>
+		</script>
+		<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+		<script type="text/javascript" src="js/alert.js" ></script>
+		<script>
+			var  init = function(){
+				$("#picBox img").attr("src","img/memberLogin.png")
+				$("#contentBox").html("");
+				$("#contentBox").html($("#member_login").html());
+			}
+			
+			function busiUserLogin(){
+				var userID = $("#userID").val();
+				var passWord = $("#passWord").val();
+				
+				$(".login_btn").attr("disabled","disabled");
+				
+				if(!userID){
+					alert_("请输入用户名！")
+					$(".login_btn").removeAttr("disabled");
+					return false;
+				}
+				if(!passWord){
+					alert_("请输入密码！")
+					$(".login_btn").removeAttr("disabled");
+					return false;
+				}
+				var parm = {
+					userID: userID,
+					passWord: passWord
+				}
+				$.ajax({
+					type:"post",
+					url: ajax_url() +"busiUserLogin/login.shtml",
+					async:true,
+					timeout:4000,
+					data: parm,
+					dataType: "json",
+					success: function(data){
+						console.log(data)
+						if(data.success == "登录成功"){
+							sessionStorage.setItem('token',data.token);
+							sessionStorage.setItem('level',data.user.level);
+							sessionStorage.setItem('phone',data.user.phone);
+							sessionStorage.setItem('userID',data.user.userID);
+							sessionStorage.setItem('parentLevel',data.user.parentLevel);
+							if(data.user.userIDCard){
+								sessionStorage.setItem('userIDCard',data.user.userIDCard);
+								sessionStorage.setItem('userName',data.user.userName);
+							}else{
+								sessionStorage.setItem('userIDCard','');
+								sessionStorage.setItem('userName','');
+							}
+							window.location.href = "index.html";
+						}else{
+							alert_(data.error);
+							$(".login_btn").removeAttr("disabled");
+						} 
+					}
+				})
+			}
+			function phone_login(){
+				$("#picBox img").attr("src","img/phoneLogin.png")
+				$("#contentBox").html("");
+				$("#contentBox").html($("#phone_login").html());
+				$(".btn_Code").get(0).addEventListener("click",function(e){
+					get_code()
+				})
+			}
+			
+			var countdown=30; 
+		function settime(obj) { 
+			if (countdown == 0) { 
+				$(obj).removeAttr("disabled"); 
+				$(obj).val("获取动态密码"); 
+				countdown = 30; 
+				return;
+			} else { 
+				$(obj).attr("disabled", "disabled"); 
+				$(obj).val(countdown+"s后重新发送"); 
+				countdown--; 
+			} 
+			setTimeout(function() { 
+				settime(obj) 
+			},1000) 
+		}
+		
+		/*获取验证码*/
+		function get_code(){
+			var phone = $("#phone").val();
+			if(!phone){
+				alert_("请输入手机号码！");
+				countdown = 0;
+				return
+			}
+			if(!reg_phone(phone)){
+				countdown = 0;
+				return 
+			}
+			var parm = {
+				phone: phone
+			}
+			$.ajax({
+				type:"post",
+				url: ajax_url()+"commonUtil/getVeriCode.shtml",
+				async:true,
+				data: parm,
+				success:function(data){
+					var data = eval("("+data+")")
+					if(data.success){
+							alert_(data.success);
+						}else{
+							alert_(data.error);
+						}
+				}
+			});
+		}
+			function loginByPhone(){
+				var phone = $("#phone").val();
+				var veriCode = $("#veriCode").val();
+				
+				$(".login_btn").attr("disabled","disabled");
+				
+				if(!phone){
+					alert_("请输入手机号码！")
+					$(".login_btn").removeAttr("disabled");
+					return false;
+				}
+				if(!veriCode){
+					alert_("请输入密码！")
+					$(".login_btn").removeAttr("disabled");
+					return false;
+				}
+				var parm = {
+					phone: phone,
+					veriCode: veriCode
+				}
+				$.ajax({
+					type:"post",
+					url: ajax_url() +"busiUserLogin/loginByPhone.shtml",
+					async:true,
+					timeout:4000,
+					data: parm,
+					dataType: "json",
+					success: function(data){
+						console.log(data)
+						if(data.success == "登录成功"){
+							sessionStorage.setItem('token',data.token);
+							sessionStorage.setItem('level',data.user.level);
+							sessionStorage.setItem('phone',data.user.phone);
+							sessionStorage.setItem('userID',data.user.userID);
+							
+							sessionStorage.setItem('parentLevel',data.user.parentLevel);
+							
+							if(data.user.userIDCard){
+								sessionStorage.setItem('userIDCard',data.user.userIDCard);
+								sessionStorage.setItem('userName',data.user.userName);
+							}else{
+								sessionStorage.setItem('userIDCard','');
+								sessionStorage.setItem('userName','');
+							}
+							
+							window.location.href = "index.html";
+						}else{
+							alert_(data.error);
+							$(".login_btn").removeAttr("disabled");
+						} 
+					}
+				})
+			}
+			$(function(){
+				init();
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>修改密码</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+	</head>
+	<body>
+		<header class="header_common">
+			<img src="img/back.png">
+			<p>修改密码</p>
+		</header>
+		<div class="indexHeadPic">
+				<img src="img/memberHead.png" width="100%" />
+		</div>
+		<div class="commonContainer textCenter" style="margin-top: 1rem;">
+			<div class="formBox">
+				<div class="inputBox bankCardInput" style="margin-bottom: 1rem;">
+					<div class="inputBoxCell clearfix">
+						<div class="left">
+							<input  type="password" id="passWord" placeholder="请输入原密码" />
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						<div class="left">
+							<input  type="password" id="newPassWord" placeholder="请输入新密码" />
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						<div class="left">
+							<input  type="password" id="configpasW" placeholder="请确认新密码" />
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						<div class="left">
+							<input  type="text" id="phone" readonly="readonly" style="width: 7rem;"/>
+						</div>
+						<div class="right">
+							<input type="button"  onclick="settime(this)" class="inputSpan inputBtn btn_Code" value="获取验证码" >
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						<div class="left">
+							<input  type="text" id="veriCode" placeholder="请输入验证码" />
+						</div>
+					</div>
+				</div>
+				<button  class="commonBtn modifyPsw btnBigSize colorWhite textCenter" onclick="modifyPsw()">保存</button>
+			</div>
+		</div>
+		<script src="js/jquery-1.10.1.min.js"></script>
+		<script src="js/alert.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+			$(".header_common").click(function(){
+				$("body").animate({left:"100%"}, 150,function() {
+				    window.location.href = "index.html#3";
+				});
+			})
+			$("#phone").val(sessionStorage.getItem("phone"));
+			var countdown=30; 
+			var token = sessionStorage.getItem("token")
+			function settime(obj) { 
+				if (countdown == 0) { 
+					$(obj).removeAttr("disabled"); 
+					$(obj).val("获取验证码"); 
+					countdown = 30; 
+					return;
+				} else { 
+					$(obj).attr("disabled", "disabled"); 
+					$(obj).val(countdown+"s后重新发送"); 
+					countdown--; 
+				} 
+				setTimeout(function() { 
+					settime(obj) 
+				},1000) 
+			}
+			
+			$(".btn_Code").get(0).addEventListener("click",function(e){
+				get_code()
+			})
+			
+			/*获取验证码*/
+			function get_code(){
+				var phone = sessionStorage.getItem("phone");
+//				if(!phone){
+//					alert_("请输入手机号码！");
+//					countdown = 0;
+//					return
+//				}
+				
+				if(!reg_phone(phone)){
+					countdown = 0;
+					return 
+				}
+				var parm = {
+					phone: phone
+				}
+				$.ajax({
+					type:"post",
+					url: ajax_url()+"commonUtil/getVeriCode.shtml",
+					async:true,
+					data: parm,
+					success:function(data){
+						var data = eval("("+data+")")
+						if(data.success){
+								alert_(data.success);
+							}else{
+								alert_(data.error);
+							}
+					}
+				});
+			}
+			
+			function modifyPsw(){
+				$(".modifyPsw").attr("disabled","disabled")
+				var passWord = $("#passWord").val();
+				var newPassWord = $("#newPassWord").val();
+				var configpasW = $("#configpasW").val();
+				var phone = $("#phone").val();
+				var veriCode = $("#veriCode").val();
+				var regExp = /^[A-Za-z0-9]+$/;
+				if(!passWord){
+					alert_("请输入密码！")
+					$(".modifyPsw").removeAttr("disabled");
+					return false;
+				}
+				if(!phone){
+					alert_("请输入您的新手机号！")
+					$(".modifyPsw").removeAttr("disabled");
+					return false;
+				}
+				if(!reg_phone(phone)){
+					$(".modifyPsw").removeAttr("disabled");
+					return false;
+				}
+				if(!veriCode){
+					alert_("请输入验证码！")
+					$(".modifyPsw").removeAttr("disabled");
+					return false;
+				}
+				if(!newPassWord){
+					alert_("请输入密码！")
+					$(".modifyPsw").removeAttr("disabled");
+					return false;
+				}else if(!regExp.test(newPassWord)){
+					alert_("密码为数字或字母组合！");
+					$(".modifyPsw").removeAttr("disabled");
+					return false;
+				}
+				if(newPassWord.length<6 || newPassWord.length>20){
+					alert_("密码为6-20位！")
+					$(".modifyPsw").removeAttr("disabled");
+					return false;
+				}
+				if(!configpasW){
+					alert_("请输入确认密码！")
+					$(".modifyPsw").removeAttr("disabled");
+					return false;
+				}
+				if(!(configpasW == newPassWord)){
+					alert_("两次密码输入不一致！")
+					$(".modifyPsw").removeAttr("disabled");
+					return false;
+				}
+				var parm = {
+					passWord: passWord,
+					newPassWord: newPassWord,
+					phone: phone,
+					veriCode: veriCode,
+				}
+				$.ajax({
+					type:"post",
+					url: ajax_url() +"busiUser/modifyPassword.shtml?token=" +token,
+					async:true,
+					timeout:4000,
+					data: parm,
+					dataType: "json",
+					success:function(data){
+						if(data.success){
+							alert_(data.success);
+			      			setTimeout(function(){
+									window.location.href = "index.html#3"
+								},1000)
+			      		}else{
+			      			alert_(data.error);
+			      			$(".modifyPhone").removeAttr("disabled");
+			      		}
+					}
+				})
+			}
+		</script>
+	</body>
+</html>

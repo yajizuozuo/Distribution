@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>客户订单管理</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+    	<link rel="stylesheet" href="css/dropload.css" />
+    	
+    	<style>
+    		.timeChoose{
+    			margin-top: 1rem;
+    		}
+    		.timeChoose .left,.timeChoose .right{
+    			width: 48%;
+    			position: relative;
+    		}
+    		
+    		
+    		.timeChoose input{
+    			width: 70%;
+    			border: none;
+    			padding-left: 0.5rem;
+    			outline: none;
+    		}
+    		.timeChoose img{
+    			position: absolute;
+			    top: 50%;
+			    right: 5%;
+			    transform: translateY(-50%) scale(0.6);
+    		}
+    		.spanbox{
+    			width: 0;
+    			height: 1.2rem;
+    			border-left: 1px solid #ccc;
+    		}
+    		.commonBox .clearfix{
+    			margin-left: 0.5rem;
+    			margin-right: 0.5rem;
+    			padding-top: 0.5rem;
+    			padding-bottom: 0.5rem;
+    		}
+			.commonBox  .completionStyle{
+    			padding-bottom: 0rem;
+    		}
+    		.orderManCell .clearfix:first-child{
+    			border-bottom: 1px solid #eee;
+    		}
+    		.commonBtn{
+    			padding: 0.2rem 0.5rem;
+    			border-radius: 0.5rem;
+    		}
+    	</style>
+	</head>
+	<body>
+		<header class="header_common header_common_detail">
+			<img src="img/back.png">
+			<p>客户订单管理</p>
+		</header>
+		<div class="commonBox commonContainer timeChoose">
+			<div class="clearfix">
+				<div class="left">
+					<input class="dataInput" id="startDate" type="text" onblur="(this.type='text')" onfocus="(this.type='date')" oninput="(this.type='text')" onchange="(this.type='text')"  placeholder="日期选择">
+					<img src="img/timeChoose.png" />
+				</div>
+				<span class="spanbox"></span>
+				<div class="right">
+					<input class="dataInput" id="endDate" type="text" onblur="(this.type='text')" onfocus="(this.type='date')" oninput="(this.type='text')" onchange="(this.type='text')"  placeholder="日期选择"/>
+					<img src="img/timeChoose.png" />
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			
+		</div>
+		<script src="js/jquery-1.10.1.min.js"></script>
+		<script src="js/alert.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/dropload.min.js" ></script>
+		
+		<script>
+			$(".header_common").click(function(){
+				$("body").animate({left:"100%"}, 300,function() {
+				    $("body").html("");
+				    window.location.href = "index.html#2";
+				});
+					
+			})
+			var token = sessionStorage.getItem("token");
+			
+			$("#endDate").on('blur',function(){
+				$(this).attr("type","text");
+				var startDate = $("#startDate").val();
+				if(!startDate){
+					alert_("请选择起始时间！")
+					return false;
+				}
+				var endDate = $("#endDate").val();
+				init(startDate,endDate)
+			})
+			
+			var init = function(startDate,endDate){
+				$(".content").html("");
+				var parm = {
+					startDate: startDate,
+					endDate: endDate,
+					pageSize:8,
+					pageNow:0
+				}
+				
+				$('.content').dropload({
+		        scrollArea : window,
+		        domDown : {
+		            domClass   : 'dropload-down',
+		            domRefresh : '<div class="dropload-refresh">↑上拉加载</div>',
+		            domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+		            domNoData  : '<div class="dropload-noData">暂无数据</div>'
+		        },
+				loadDownFn : function(me){
+	            	parm.pageNow++;
+	            	// 拼接HTML
+					var cHtml = "";
+					$.ajax({
+						type:"post",
+						url:ajax_url()+"order/getDownUserOrderList.shtml?token="+ token,
+						async:true,
+						data:parm,
+						success:function(data){
+							var data = eval("("+data+")")
+							if(data.error){
+								window.location.href = "login.html";
+							}else if(data.downUserOrderList.records){
+								var dataRecode = data.downUserOrderList.records
+								if(dataRecode.length > 0){
+									for(var index in dataRecode){
+										cHtml += '<div class="commonContainer commonBox orderManCell mismText"><div class="clearfix">';
+										cHtml += '<div class="left">状态</div><div class="right">'
+										if(dataRecode[index].level != "联合创始人"){
+											if(dataRecode[index].status == "待发货"){
+												cHtml += '<span class="colorFont">'+ dataRecode[index].status +'</span><a class="commonBtn colorWhite" style="margin-left:0.5rem;"  onclick="location_(&quot;customerOrderDelivery&quot;,&quot;'+ dataRecode[index].billNo +'&quot;)">发货</a>'
+											}else{
+												cHtml += '<span class="colorFont">'+ dataRecode[index].status +'</span><a class="commonBtn colorWhite" style="margin-left:0.5rem;"  onclick="location_(&quot;modifyCustomerOrderDelivery&quot;,&quot;'+ dataRecode[index].billNo +'&quot;)">修改</a>'
+											}
+										}else{
+												cHtml += '<span class="colorFont">'+ dataRecode[index].status +'</span>'
+											
+										}
+										
+										cHtml += '</div></div>'
+										cHtml += '<p style="margin-left: 0.5rem;margin-right: 0.5rem;padding-top: 0.5rem;">订单号&nbsp;<span class="colorFont">'+ dataRecode[index].billNo +'</span></p>'
+										cHtml += '<div class="clearfix completionStyle"><div class="left">'
+										cHtml += '<p>姓名&nbsp;<span class="colorFont">'+ dataRecode[index].userName +'</span></p>'
+										cHtml += '</div><div class="right">'
+										cHtml += '<p>级别&nbsp;<span class="colorFont">'+ dataRecode[index].level +'</span></p></div></div>'
+										cHtml += '<div class="clearfix completionStyle"><div class="left">'
+										cHtml += '<p>拿货价&nbsp;<span class="colorFont">'+ dataRecode[index].price +'</span></p>'
+										cHtml += '</div><div class="right">'
+										cHtml += '<p>拿货数量&nbsp;<span class="colorFont">'+ calcNum(dataRecode[index].goodsNum) +'</span></p></div></div>'
+										var time = formatDateTimeJQ(dataRecode[index].createTime)
+										cHtml += '<p style="margin-left: 0.5rem;margin-right: 0.5rem;padding-top: 0.5rem;padding-bottom: 0.5rem;">时间&nbsp;<span class="colorFont">'+ time +'</span></p></div><div class="right">'
+										
+										cHtml += '</div>'
+										
+									}
+									$(".content").prepend(cHtml);
+									me.resetload();
+								}else if(dataRecode.length == 0){
+									// 锁定
+					                me.lock();
+					                // 无数据
+					                me.noData();
+					                me.resetload();
+								}
+							}
+						},
+		                error: function(xhr, type){
+		                    alert_('请求错误');
+		                    // 即使加载出错，也得重置
+		                     // 锁定
+				                me.lock();
+				                // 无数据
+				                me.noData();
+		                    me.resetload();
+		                }
+					});
+			},
+	        threshold : 50
+	    });
+	}    
+					
+//				$.ajax({
+//					type:"post",
+//					url:ajax_url()+"order/getDownUserOrderList.shtml?token="+ token,
+//					async:true,
+//					data:parm,
+//					success:function(data){
+//						var data = eval("("+data+")")
+//						var cHtml = '';
+//						if(data.downUserOrderList.records){
+//							var dataRecode = data.downUserOrderList.records
+//							for(var index in dataRecode){
+//								cHtml += '<div class="commonContainer commonBox orderManCell"><div class="clearfix">';
+//								cHtml += '<div class="left">状态</div><div class="right">'
+//								if(dataRecode[index].level != "联合创始人"){
+//									if(dataRecode[index].status == "待发货"){
+//										cHtml += '<span>'+ dataRecode[index].status +'</span><a class="commonBtn colorWhite" style="margin-right:1rem;"  onclick="location_(&quot;customerOrderDelivery&quot;,&quot;'+ dataRecode[index].billNo +'&quot;)">发货</a>'
+//									}else{
+//										cHtml += '<span>'+ dataRecode[index].status +'</span><a class="commonBtn colorWhite" style="margin-right:1rem;"  onclick="location_(&quot;modifyCustomerOrderDelivery&quot;,&quot;'+ dataRecode[index].billNo +'&quot;)">修改</a>'
+//									}
+//								}else{
+//										cHtml += '<span>'+ dataRecode[index].status +'</span>'
+//									
+//								}
+//								
+//								cHtml += '</div></div>'
+//								cHtml += '<p style="margin-left: 0.5rem;margin-right: 0.5rem;padding-top: 0.5rem;">订单号&nbsp;<span class="colorFont">'+ dataRecode[index].billNo +'</span></p>'
+//								cHtml += '<div class="clearfix"><div class="left">'
+//								cHtml += '<p>姓名&nbsp;<span class="colorFont">'+ dataRecode[index].userName +'</span></p>'
+//								cHtml += '<p>拿货价&nbsp;<span class="colorFont">'+ dataRecode[index].price +'</span></p>'
+//								var time = formatDateTimeJQ(dataRecode[index].createTime)
+//								cHtml += '<p>时间&nbsp;<span class="colorFont">'+ time +'</span></p></div><div class="right">'
+//								cHtml += '<p>级别&nbsp;<span class="colorFont">'+ dataRecode[index].level +'</span></p>'
+//								cHtml += '<p>拿货数量&nbsp;<span class="colorFont">'+ dataRecode[index].goodsNum +'</span></p></div></div></div>'
+//								
+//						}
+//							$("body").append(cHtml);
+//					}
+//					}
+//				});
+//			} 
+			init();
+			
+			
+		</script>
+	</body>
+</html>

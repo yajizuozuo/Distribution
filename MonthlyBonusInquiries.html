@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>每月奖金记录</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+    	<link rel="stylesheet" href="css/dropload.css" />
+    	<style>
+    		.timeChoose{
+    			margin-top: 1rem;
+    		}
+    		.timeChoose .left,.timeChoose .right{
+    			width: 48%;
+    			position: relative;
+    		}
+    		
+    		
+    		.timeChoose input{
+    			width: 70%;
+    			border: none;
+    			padding-left: 0.5rem;
+    			outline: none;
+    		}
+    		.timeChoose img{
+    			position: absolute;
+			    top: 50%;
+			    right: 5%;
+			    transform: translateY(-50%) scale(0.6);
+    		}
+    		.spanbox{
+    			width: 0;
+    			height: 1.2rem;
+    			border-left: 1px solid #ccc;
+    		}
+    		.commonBox .clearfix{
+    			margin-left: 0.5rem;
+    			margin-right: 0.5rem;
+    			padding-top: 0.5rem;
+    			padding-bottom: 0.5rem;
+    		}
+    		.orderManCell .clearfix:nth-child(2){
+    			border-bottom: 1px solid #eee;
+    		}
+    		.commonBtn{
+    			padding: 0.2rem 0.5rem;
+    			border-radius: 0.5rem;
+    		}
+    		.bonusDetail .left{
+    			width: 33%;
+    		}
+    		.tableTitle{
+    			line-height: 2rem;
+    			background: #fff;
+    			width: 100%;
+    		}
+    		.tableTitle .left,.tableTitle .right{
+    			width: 50%;
+    		}
+    		.PerformanceAward{
+    			display: inline-block;
+			    padding-left: 1rem;
+			    padding-right: 1rem;
+    		}
+    		.pActive{
+    			border-bottom: 1px solid #00baad;
+    			color: #00baad;
+    		}
+    		.contentBox{
+    			
+    		}
+    		.commonBtn{
+    			margin: 0 auto;
+    			width: 90%;
+    			height: 3rem;
+     			line-height: 3rem;
+    			height: 3rem;
+    			line-height: 3rem;
+    			border-radius: 0.2rem;
+    			padding: 0;
+    			margin-top: 1rem;
+    		}
+    		.displayStyle{display: none;}
+    	</style>
+	</head>
+	<body>
+		<header class="header_common header_common_detail">
+			<img src="img/back.png">
+			<p>每月奖金记录</p>
+		</header>
+		<div class="tableTitle">
+			<div class="clearfix">
+				<div class="left textCenter">
+					<p class="PerformanceAward Performance  pActive" onclick="init()">业绩奖</p>
+				</div>
+				<div class="right textCenter">
+					<p class="PerformanceAward commended" onclick="commended()">推荐奖</p>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="contentBox">
+			<div class="commonBtn colorWhite textCenter displayStyle">
+				总推荐奖
+				<span id="totalCommond">123213</span>
+			</div>
+			<div class="content"></div>
+		</div>
+		
+		<script src="js/jquery-1.10.1.min.js"></script>
+		<script type="text/javascript" src="js/alert.js" ></script>
+		<!--<script type="text/javascript" src="js/common.js" ></script>-->
+		<script src="js/dropload.min.js"></script>
+		<script>
+			
+			$(".header_common").click(function(){
+				$("body").animate({left:"100%"}, 150,function() {
+				    window.location.href = "index.html#2";
+				});
+			})
+			var token = sessionStorage.getItem("token");
+			var init = function(){
+				$(".PerformanceAward").removeClass("pActive");
+				$(".Performance").addClass("pActive");
+				$(".displayStyle").hide();
+				$(".content").html("");
+				
+				var	pageSize = 8;
+				var	pageNow = 0;
+				$('.content').dropload({
+				        scrollArea : window,
+				        domDown : {
+				            domClass   : 'dropload-down',
+				            domRefresh : '<div class="dropload-refresh">↑上拉加载</div>',
+				            domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+				            domNoData  : '<div class="dropload-noData">暂无数据</div>'
+				        },
+						loadDownFn : function(me){
+			            	pageNow++;
+			            	// 拼接HTML
+							var cHtml = "";
+					
+							$.ajax({
+								type:"post",
+								url:ajax_url() +"busiBonus/getUserBonusList.shtml?token=" +token,
+								async:true,
+								data: {pageSize:pageSize,pageNow:pageNow},
+								dataType: 'json',
+								success:function(data){
+		//							var data = eval("("+data+")");
+		
+									if(data.error){
+										window.location.href = "login.html";
+									}else if(data.bonusList.records){
+										var records = data.bonusList.records
+										if(records.length > 0){
+											for(var index in records){
+												cHtml += '<div class="commonContainer commonBox orderManCell mismText" style="margin-top:1rem;"><div class="clearfix"><div class="left colorFont">'+ records[index].month +'</div>';
+												cHtml += '<div class="right colorCommon">'+ records[index].status +'</div>'
+												cHtml += '</div><div class="clearfix textCenter bonusDetail"><div class="left">'
+												cHtml += '<p class="midText colorCommon">'+ calcNum(parseInt(records[index].bonus)) +'</p><p class="smallText">每月获得总奖金</p></div><div class="left">'
+												cHtml += '<p class="midText colorCommon">'+ records[index].downBonus +'</p><p class="smallText">应付下级奖金</p>'
+												cHtml += '</div><div class="left"><p class="midText colorCommon">'+ calcNum(records[index].bonus - records[index].downBonus) +'</p><p class="smallText">实际获得</p>'
+												var status = encodeURIComponent(records[index].status)
+												cHtml += '</div></div><div class="clearfix"><div class="right"><a class="aBtn colorCommon" href="bonusDetail.html?id='+ records[index].month +'&status='+ status +'&bonus='+ records[index].bonus +'&downBonus='+ records[index].downBonus +'">查看</a></div></div></div>'
+												
+											}
+											$(".content").prepend(cHtml);
+											me.resetload();
+										}else if(records.length == 0){
+											 // 锁定
+							                me.lock();
+							                // 无数据
+							                me.noData();
+							                me.resetload();
+							           }
+									}
+								},
+				                error: function(xhr, type){
+				                    alert_('请求错误');
+				                    // 即使加载出错，也得重置
+				                    me.resetload();
+				                }
+							});
+					},
+			        threshold : 50
+			    });
+			}
+			init();
+			
+			function commended(){
+				$(".PerformanceAward").removeClass("pActive");
+				$(".commended").addClass("pActive");
+				$(".content").html("");
+				$(".displayStyle").show();
+				var	pageSize = 8;
+				var	pageNow = 0;
+				$('.content').dropload({
+				        scrollArea : window,
+				        domDown : {
+				            domClass   : 'dropload-down',
+				            domRefresh : '<div class="dropload-refresh">↑上拉加载</div>',
+				            domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+				            domNoData  : '<div class="dropload-noData">暂无数据</div>'
+				        },
+						loadDownFn : function(me){
+			            	pageNow++;
+			            	// 拼接HTML
+							var cHtml = "";
+					
+							$.ajax({
+								type:"post",
+								url:ajax_url() +"pushBonus/getUserPushBonusList.shtml?token=" +token,
+								async:true,
+								data: {pageSize:pageSize,pageNow:pageNow},
+								dataType: 'json',
+								success:function(data){
+		//							var data = eval("("+data+")");
+		
+									if(data.error){
+										window.location.href = "login.html";
+									}else if(data.pushBonusList.records){
+										if(data.sumPushBonus){
+											$("#totalCommond").html(data.sumPushBonus.totalBonus)
+										}else{
+											$("#totalCommond").html("0")
+										}
+										var records = data.pushBonusList.records
+										if(records.length > 0){
+											for(var index in records){
+												var time = formatDateTimeJQ(records[index].createTime)
+												cHtml += '<div class="commonContainer commonBox orderManCell mismText" style="margin-top:1rem;"><div class="clearfix" style="border-bottom: 1px solid #eee;"><div class="left colorFont">'+ time +'</div>';
+												cHtml += '<div class="right colorCommon">'+ records[index].status +'</div>'
+												cHtml += '</div><div class="clearfix textCenter bonusDetail"><div class="left">'
+												cHtml += '<p class="midText colorCommon">'+ records[index].lowerName +'</p><p class="smallText">推荐人姓名</p></div><div class="left">'
+												cHtml += '<p class="midText colorCommon">'+ records[index].lowerID +'</p><p class="smallText">推荐人账号</p>'
+												cHtml += '</div><div class="left"><p class="midText colorCommon">'+ parseInt(records[index].bonus) +'</p><p class="smallText">推荐奖金</p>'
+//												
+												cHtml += '</div></div></div>'
+												
+											}
+											$(".content").prepend(cHtml);
+											me.resetload();
+											 // 锁定
+							                me.lock();
+										}else if(records.length == 0){
+											 // 锁定
+							                me.lock();
+							                // 无数据
+							                me.noData();
+							                me.resetload();
+							           }
+									}
+								},
+				                error: function(xhr, type){
+				                    alert_('请求错误');
+				                    // 即使加载出错，也得重置
+				                    me.resetload();
+				                    return false;
+				                }
+							});
+					},
+			        threshold : 50
+			    });
+				
+			}
+			
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>添加银行卡</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+	</head>
+	<body>
+		<header class="header_common">
+			<img src="img/back.png">
+			<p>添加银行卡</p>
+		</header>
+		<div class="indexHeadPic">
+				<img src="img/memberHead.png" width="100%" />
+		</div>
+		<div class="commonContainer textCenter" style="margin-top: 1rem;">
+			<div class="formBox">
+				<div class="inputBox bankCardInput" style="margin-bottom: 1rem;">
+					<div class="inputBoxCell clearfix">
+						
+						<div class="left">
+							<input  type="text" id="bankAccount" placeholder="请输入您的真实姓名" />
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						
+						<div class="left">
+							<input  type="text" id="idCardNo" placeholder="请输入您的身份证号" />
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						
+						<div class="left">
+							<input  type="text" id="bankCardNo" placeholder="请输入您的银行卡号" />
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						
+						<div class="left">
+							<input  type="text" id="bankName" placeholder="请输入您的开户银行" />
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						
+						<div class="left">
+							<input  type="text" id="bankBranchName" placeholder="请输入您的开户支行" />
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						
+						<div class="left">
+							<input  type="text" id="phone" placeholder="请输入银行预留手机号" />
+						</div>
+					</div>
+					
+				</div>
+				<button  class="commonBtn btnBigSize colorWhite textCenter add_bankNo" onclick="add_bankNo()">添加</button>
+			</div>
+		</div>
+		<script src="js/jquery-1.10.1.min.js"></script>
+		<script src="js/alert.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+			$(".header_common").click(function(){
+				$("body").animate({left:"100%"}, 150,function() {
+				    window.location.href = "bankCard.html";
+				});
+			})
+			var token = sessionStorage.getItem("token");
+			/*添加银行卡*/
+			function add_bankNo(){
+				$(".add_bankNo").attr("disabled","disabled")
+				var bankAccount = $("#bankAccount").val();
+				var bankCardNo = $("#bankCardNo").val();
+				var bankName = $("#bankName").val();
+				var phone = $("#phone").val();
+				var idCardNo = $("#idCardNo").val();
+				var bankBranchName = $("#bankBranchName").val();
+				var regExpBankNo = /^([1-9]{1})(\d{13}|\d{14}|\d{15}|\d{16}|\d{17}|\d{18}|\d{19})$/;
+				var regExpChina = /^[\u4e00-\u9fa5]{0,}$/; 
+				var regExpIdCard = /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/
+	
+				if(!bankAccount){
+					alert_("请输入您的真实姓名！")
+					$(".add_bankNo").removeAttr("disabled");
+					return false;
+				}else if(!regExpChina.test(bankAccount)){
+					alert_("请输入中文姓名！")
+					$(".add_bankNo").removeAttr("disabled");
+					return false;
+				}
+				
+				if(!bankCardNo){
+					alert_("请输入您的银行卡号！")
+					$(".add_bankNo").removeAttr("disabled");
+					return false;
+				}else if(!regExpBankNo.test(bankCardNo)){
+					alert_("请输入正确的银行卡号！")
+					$(".add_bankNo").removeAttr("disabled");
+					return false;
+				}
+				
+				if(!bankName){
+					alert_("请输入您的开户银行！")
+					$(".add_bankNo").removeAttr("disabled");
+					return false;
+				}else if(!regExpChina.test(bankName)){
+					alert_("请输入正确的开户行！")
+					$(".add_bankNo").removeAttr("disabled");
+					return false;
+				}
+				if(!bankBranchName){
+					alert_("请输入您的开户支行！")
+					$(".add_bankNo").removeAttr("disabled");
+					return false;
+				}else if(!regExpChina.test(bankBranchName)){
+					alert_("请输入正确的开户支行！")
+					$(".add_bankNo").removeAttr("disabled");
+					return false;
+				}
+				if(!phone){
+					alert_("请输入您的预留手机号！")
+					$(".add_bankNo").removeAttr("disabled");
+					return false;
+				}
+				if(!reg_phone(phone)){
+					$(".add_bankNo").removeAttr("disabled");
+					return false;
+				}
+				if(!idCardNo){
+					alert_("请输入您的身份证号！")
+					$(".add_bankNo").removeAttr("disabled");
+					return false;
+				}else if(!regExpIdCard.test(idCardNo)){
+					alert_("身份证号码格式有误！")
+					$(".add_bankNo").removeAttr("disabled");
+					return false;
+				}
+				var parm = {
+					bankAccount: bankAccount,
+					bankCardNo: bankCardNo,
+					bankName: bankName,
+					phone: phone,
+					idCardNo: idCardNo,
+					bankBranchName: bankBranchName
+				}
+				
+				$.ajax({
+					type:"post",
+					url: ajax_url()+"busiUserBankCard/addBankCard.shtml?token="+token,
+					async:true,
+					data: parm,
+					dataType: "json",
+			      	success: function(data){
+			      		if(data.success){
+			      			alert_(data.success);
+			      			setTimeout(function(){
+									window.location.href = "bankCard.html"
+								},1000)
+			      		}else{
+			      			alert_(data.error);
+			      			$(".add_bankNo").removeAttr("disabled");
+			      		}
+			      		
+			      	}
+				});
+			}
+		</script>
+	</body>
+</html>

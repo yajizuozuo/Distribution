@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>联合创始人申请</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	
+    	<link rel="stylesheet" href="css/swiper.min.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+    	<style>
+    		.deliveryBoxCell:last-child{border: none;}
+    		.choose_bank{position: relative;margin: 1rem;padding-top: 0.5rem;margin-bottom: 0rem;}
+    		.choose_bank_border{border-bottom: 1px solid #eee;}
+    		.choose_bank .clearfix{    padding-bottom: 0.5rem;}
+			.choose_bank .left{width: 80%;}
+			.choose_bank .right{width: 20%;}
+			/*.choose_bank_btn span,.choose_address span{transform: rotate(90deg);display: inline-block;}*/
+			.choose_bank_btn img,.choose_combank_btn img,.choose_address_btn img{transform: scale(0.6);}
+			.bank_list,.combank_list,.address_list{position: initial;top: 2.25rem;background: #fff;width: 100%;margin-left: -0.25rem;display: none;}
+			.bank_list li,.combank_list li,.address_list li{padding-left: 0.35rem;padding-top: 0.5rem;}
+			.smallText {font-size: 0.8rem;}
+    	</style>
+	</head>
+	<body>
+		<header class="header_common header_common_detail">
+			<img src="img/back.png">
+			<p>联合创始人申请</p>
+		</header>
+		<div id="contentBOX">
+			
+		</div>
+		
+		<!--第一步-->
+		<script type="text/html" id="step1">
+			<div class="step step1 textCenter bigText">
+				<span class="stepbox stepCellActive">1</span>
+				<span class="stepbox">2</span>
+				<span class="stepbox">3</span>
+				<span class="">4</span>
+			</div>	
+			<div class="container textCenter">
+				<p class="upText">中辰梁品健康产业公司现招募</p>
+				<p class="upText">"全球联合创始人"</p>
+				<p class="upText colorRed marginBox">投资额:18000元</p>
+				<p class="midText" style="margin-bottom: 0.5rem;">享受福利</p>
+				<p class="textLeft smallText colorFont">1、获得中辰梁品乂敬界古秘膏贴“全球联合创始人”最顶层代理，下次拿货享受全公司最低代理价23元／盒，（之后全国市场统一由全球联合创始人出货）；</p>
+				<p class="textLeft smallText colorFont">2、赋予“中辰梁品cctv央视展播品牌 ·中国优选品牌”战略合作单位；</p>
+				<p class="textLeft smallText colorFont">3、中辰梁品产品300盒；</p>
+				<p class="textLeft smallText colorFont">4、联合创始人直接与公司对接，公司只给联合创始人发货和奖励，之后联合创始人奖励给自己的下级代理；</p>
+				<p class="textLeft smallText colorFont">5、联合创始人推荐奖励：联合创始人推荐一名新联合创始人，公司奖3000元，推荐到第5	个联创,额外加奖5000元（3000x5+5000）。5个之后，每推荐一个加1000元奖励（3000+1000），3个工作日之内到账；</p>
+				
+				<p class="midText colorCommon marginBox">备注：原本联合创始人基本需要提货23万，现只需1.8万即可达到联合创始人。</p>
+				<button class="btnBigSize colorWhite commonBtn" style="margin-top: 2rem;" onclick="toSteps()">下一步</button>
+			</div>
+		</script>
+		
+		<!--第2步-->
+		<script type="text/html" id="step2">
+			<div class="step step2 textCenter bigText">
+				<span class="stepbox stepCellActive">1</span>
+				<span class="stepbox stepCellActive">2</span>
+				<span class="stepbox">3</span>
+				<span class="">4</span>
+			</div>	
+			<div class="deliveryBoxBody midText" style="margin-top: 3rem;">
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">付款账号</div>
+					<div class="right choose_bank_btn  textRight"><span class="bankCardBox colorFont smallText"></span><img src="img/down.png"  ></div>
+				</div>
+				<ul class="bank_list mismText colorFont"></ul>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">付款人姓名</div>
+					<div class="right textRight colorFont"  id="bankAccount"></div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">付款金额</div>
+					<div class="right textRight colorFont">&yen;18000</div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">收款账号</div>
+					<div class="right choose_combank_btn  textRight"><span class="combankCardBox colorFont smallText"></span><img src="img/down.png"  ></div>
+				</div>
+				<ul class="combank_list mismText colorFont"></ul>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">收款人姓名</div>
+					<div class="right textRight colorFont" id="combankAccount"></div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">收款金额</div>
+					<div class="right textRight colorFont">&yen;18000</div>
+				</div>
+				<div class="clearfix deliveryBoxCell">
+					<div class="left">收货地址</div>
+					<div class="right choose_address_btn  textRight"><span class="addressBox colorFont smallText"></span><img src="img/down.png"  ></div>
+				</div>
+				<ul class="address_list mismText colorFont"></ul>
+				<div class="clearfix">
+					<p class="address colorCommon" style="margin-top: 0.5rem;"></p>
+				</div>
+			</div>
+			<div class="container textCenter">
+				<button class="btnBigSize colorWhite commonBtn founderBtn" style="margin-top: 2rem;">确认申请</button>
+			</div>
+		</script>
+		
+		<script type="text/html" id="step3">
+			<!--第三步-->
+			<div class="step step3 textCenter bigText">
+				<span class="stepbox stepCellActive">1</span>
+				<span class="stepbox stepCellActive">2</span>
+				<span class="stepbox stepCellActive">3</span>
+				<span class="">4</span>
+			</div>	
+			<div class="container textCenter" style="margin-top: 3rem;">
+				<img src="img/auditing.png"  style="width: 50%;" />
+				<p class="bigText">审核中</p>
+				<p class="upText colorBlue">请耐心等待...</p>
+			</div>
+			
+		</script>
+			
+		<script type="text/html" id="step4">
+			<!--第4步-->
+			<div class="step step4 textCenter bigText">
+				<span class="stepbox stepCellActive">1</span>
+				<span class="stepbox stepCellActive">2</span>
+				<span class="stepbox stepCellActive">3</span>
+				<span class="stepCellActive">4</span>
+			</div>	
+			<div class="container textCenter" style="margin-top: 3rem;">
+				<img src="img/success.png"  style="width: 50%;" />
+				<p class="bigText colorBlue">恭喜您</p>
+				<p class="upText ">已成为联合创始人</p>
+			</div>
+		</script>	
+			
+		<script type="text/html" id="step5">
+			<!--第5步-->
+			<div class="step step5 textCenter bigText">
+				<span class="stepbox stepCellActive">1</span>
+				<span class="stepbox stepCellActive">2</span>
+				<span class="stepbox stepCellActive">3</span>
+				<span class="stepCellActive">4</span>
+			</div>	
+			<div class="container textCenter" style="margin-top: 3rem;">
+				<img src="img/fail.png"  style="width: 50%;" />
+				<p class="bigText colorRed">审核失败</p>
+				<p class="upText ">请重新申请</p>
+				<button class="btnBigSize commonBtn colorWhite" onclick="toStepT()">立即申请</button>
+			</div>
+		</script>	
+			
+			<script src="js/jquery-1.10.1.min.js"></script>
+			<script src="js/alert.js"></script>
+			<script src="js/common.js"></script>
+			<script type="text/javascript" src="js/swiper.min.js" ></script>
+			<script type="text/javascript" src="js/alert.js" ></script>
+			<script>
+				$(".header_common").click(function(){
+					$("body").animate({left:"100%"}, 300,function() {
+				        $("body").html("");
+				        window.location.href = "index.html#0";
+				    });
+					
+				})
+				var bankID="";
+				var comBankID="";
+				var addrID = ""
+				/*获取staus*/
+				var search = location.search;
+				var paySsn = ''
+					if(search){
+						var arr = [];
+						search = search.substring(1);
+						arr = search.split("=");
+						paySsn = arr[1];
+//						alert(paySsn)
+					}
+				
+				$("#contentBOX").html();
+				$("#contentBOX").html($("#step" + paySsn).html());
+				
+				
+				function toStepT(){
+					toSteps();
+				}
+				
+				function toSteps(){
+					$("#contentBOX").html();
+					$("#contentBOX").html($("#step2").html());
+					var token = sessionStorage.getItem("token");
+					var parentLevel = sessionStorage.getItem("parentLevel");
+				/*获取我的银行卡信息*/
+				$.ajax({
+					type:"post",
+					url: ajax_url()+"busiUserBankCard/userBankCardList.shtml?token=" + token,
+					async:true,
+					success:function(data){
+//						console.log(data)
+						var data = eval("("+data+")")
+						var cHtml = '';
+						if(data.bankList){
+							var dataRecode = data.bankList
+							for(var index in dataRecode){
+								var  bankCardNo = dataRecode[index].bankCardNo.substring(0,4) + '****' + dataRecode[index].bankCardNo.substring(dataRecode[index].bankCardNo.length-4)
+								cHtml += '<li data-name="'+ dataRecode[index].bankAccount +'" data-id="'+ dataRecode[index].id +'">'+ dataRecode[index].bankName + '　' + bankCardNo +'</li>';
+							}
+//							console.log(cHtml);
+							$(".bank_list").append(cHtml);
+							
+							
+						}else $(".bank_list").html("<li>请先添加银行卡</li>")
+					}
+				});
+				
+				/*获取公司银行卡信息*/
+				$.ajax({
+					type:"post",
+					url: ajax_url()+"comBankCard/comBankCardList.shtml",
+					async:true,
+					success:function(data){
+						console.log(data)
+						var data = eval("("+data+")")
+						var cHtml = '';
+						if(data.comBankList){
+							var dataRecode = data.comBankList
+							for(var index in dataRecode){
+								var  bankCardNo = dataRecode[index].bankCardNo.substring(0,4) + '****' + dataRecode[index].bankCardNo.substring(dataRecode[index].bankCardNo.length-4)
+								cHtml += '<li data-name="'+ dataRecode[index].bankAccount +'" data-id="'+ dataRecode[index].id +'">'+ dataRecode[index].bankAccount + '　' + bankCardNo +'</li>';
+							}
+//							console.log(cHtml);
+							$(".combank_list").append(cHtml);
+						}else $(".combank_list").html("无银行卡信息")
+					}
+				})
+				
+				/*获取我的地址*/
+				$.ajax({
+					type:"post",
+					url: ajax_url()+"busiUserAddr/userAddrList.shtml?token=" + token,
+					async:true,
+					success:function(data){
+//						console.log(data)
+						var data = eval("("+data+")")
+						var cHtml = '';
+						if(data.addrList){
+							var dataRecode = data.addrList
+							for(var index in dataRecode){
+								cHtml += '<li data-id="'+ dataRecode[index].id +'">'+ dataRecode[index].name + '　' + dataRecode[index].phone + '　' + dataRecode[index].area + dataRecode[index].addr+'</li>';
+							}
+//							console.log(cHtml);
+							$(".address_list").append(cHtml);
+						}else $(".address_list").html("<li>您还未添加地址，请先添加地址</li>")
+					}
+				})
+				
+				/*公司银行卡*/
+				$(".choose_combank_btn").click(function(){
+					$(".combank_list").toggle();
+					$(".combank_list li").click(function(e){
+						comBankID = $(e.target).data("id")
+						var bankAccount = $(e.target).data("name")
+						if(comBankID){
+							var aHtml = $(e.target).html()
+							$(".combankCardBox").html(aHtml);
+							$("#combankAccount").html(bankAccount);
+						}
+						$(".combank_list").hide();
+		//				alert(aHtml);
+					})
+				})
+				/*获取银行卡信息*/
+				$(".choose_bank_btn").click(function(){
+					$(".bank_list").toggle();
+					$(".bank_list li").click(function(e){
+						bankID = $(e.target).data("id")
+						var bankAccount = $(e.target).data("name")
+						if(bankID){
+							$("#bankAccount").html(bankAccount);
+							var aHtml = $(e.target).html()
+							$(".bankCardBox").html(aHtml);
+						}
+						$(".bank_list").hide();
+					})
+				})
+				
+				/*获取收货地址*/
+				$(".choose_address_btn").click(function(){
+					$(".address_list").toggle();
+					$(".address_list li").click(function(e){
+						addrID = $(e.target).data("id")
+						if(addrID){
+							var aHtml = $(e.target).html()
+							$(".address").html(aHtml);
+						}
+						$(".address_list").hide();
+					})
+				})
+				
+				$(".founderBtn").click(function(){
+					$(".founderBtn").attr("disabled","disabled")
+					if(parentLevel<6){
+						alert_("上级不是联合创始人无法成为联合创始人")
+						$(".founderBtn").removeAttr("disabled")
+						return false;
+					}
+					
+					if(!bankID){
+						alert_("请选择付款银行")
+						$(".founderBtn").removeAttr("disabled")
+						return false;
+					}
+					if(!comBankID){
+						alert_("请选择收款银行")
+						$(".founderBtn").removeAttr("disabled")
+						return false;
+					}
+					
+					var parm = {
+							bankID: bankID,
+							comBankID:comBankID,
+							addrID:addrID
+						}
+					
+					$.ajax({
+						type:"post",
+						url:ajax_url()+"applyInfo/becomeCoFounder.shtml?token=" + token,
+						async:true,
+						data:parm,
+						success:function(data){
+//							console.log(data)
+		    				var data = eval("("+data+")")
+							if(data.success){
+								alert_(data.success);
+								setTimeout(function(){
+									window.location.href = "index.html"
+								},1000)
+							}else{
+								alert_(data.error);
+			      				$(".founderBtn").removeAttr("disabled")
+		    				}
+						},
+						error:function(data){
+							console.log(data)
+						}
+					});
+				})
+			}
+		</script>
+	</body>
+</html>

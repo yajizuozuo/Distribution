@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    	<meta name="screen-orientation"content="portrait" />
+    	<meta name="x5-orientation"content="portrait" />
+		<title>添加收货地址</title>
+		<link rel="stylesheet" href="css/reset.css" />
+    	<link rel="stylesheet" href="css/index.css" />
+    	<link rel="stylesheet" href="css/alert_.css" />
+    	<link rel="stylesheet" href="dist/css/LArea.css">
+	</head>
+	<body>
+		<header class="header_common">
+			<img src="img/back.png">
+			<p>添加收货地址</p>
+		</header>
+		<div class="indexHeadPic">
+				<img src="img/memberHead.png" width="100%" />
+		</div>
+		<div class="commonContainer textCenter" style="margin-top: 1rem;">
+			<div class="formBox">
+				<div class="inputBox bankCardInput" style="margin-bottom: 1rem;">
+					<div class="inputBoxCell clearfix">
+						
+						<div class="left">
+							<input id="name" type="text" placeholder="请输入收货人姓名" />
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						
+						<div class="left">
+							<input id="phone" type="text" placeholder="请输入收货人联系电话" />
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						<div class="left">
+							<div class="content-block">
+					            <input id="demo2" type="text" readonly placeholder="省市区选择" />
+					            <input id="value2" type="hidden" />
+					        </div>
+						</div>
+					</div>
+					<div class="inputBoxCell clearfix">
+						<div class="left">
+							<input id="addr" type="text" placeholder="请输入收货人详细地址" />
+						</div>
+					</div>
+				</div>
+				<p class="textLeft default" style="padding-left: 0.5rem;padding-bottom: 1rem;"><span class="spanTips colorWhite" >√</span>默认地址</p>
+				<button  class="commonBtn btnBigSize colorWhite textCenter address_Btn">添加</button>
+			</div>
+		</div>
+		<script src="js/jquery-1.10.1.min.js"></script>
+		<script type="text/javascript" src="js/alert.js" ></script>
+		<script src="dist/js/LAreaData1.js"></script>
+	    <script src="dist/js/LAreaData2.js"></script>
+	    <script src="dist/js/LArea.js"></script>
+		<script>
+			$(".header_common").click(function(){
+				$("body").animate({left:"100%"}, 300,function() {
+			        $("body").html("");
+			        window.location.href = "Address.html";
+			    });
+				
+			})
+			
+			
+		    var area2 = new LArea();
+		    area2.init({
+		        'trigger': '#demo2',
+		        'valueTo': '#value2',
+		        'keys': {
+		            id: 'value',
+		            name: 'text'
+		        },
+		        'type': 2,
+		        'data': [provs_data, citys_data, dists_data]
+		    });
+		    
+		    
+		    $(".default").click(function(){
+		    	if($(".default > span").hasClass('spanTips')){
+		    		$(".default > span").removeClass("spanTips");
+		    	}else{
+		    		$(".default > span").addClass("spanTips")
+		    	}
+		    	
+//		    	$(".default").find("span").className
+		    })
+		    var token = sessionStorage.getItem("token");
+		    
+		    $(".address_Btn").click(function(){
+		    	$(".address_Btn").attr("disabled","disabled")
+		    	var isDefault = $(".default > span").hasClass('spanTips') ? 1 : 0;
+		    	console.log(isDefault);
+		    	var name = $("#name").val();
+		    	var addr = $("#addr").val();
+		    	var phone = $("#phone").val();
+		    	var area = $("#demo2").val().replace(/,/g, "");
+		    	var regExpChina = /^[\u4e00-\u9fa5]{0,}$/; 
+		    	
+		    	
+		    	if(!name){
+					alert_("请输入收货人姓名！")
+					$(".address_Btn").removeAttr("disabled");
+					return false;
+				}else if(!regExpChina.test(name)){
+					alert_("请输入中文姓名！")
+					$(".address_Btn").removeAttr("disabled");
+					return false;
+				}
+		    	
+		    	if(!phone){
+					alert_("请输入收货人的手机号！")
+					$(".address_Btn").removeAttr("disabled");
+					return false;
+				}
+				if(!reg_phone(phone)){
+					$(".address_Btn").removeAttr("disabled");
+					return false;
+				}
+		    	if(!area){
+					alert_("请选择省市区！")
+					$(".address_Btn").removeAttr("disabled");
+					return false;
+				}
+		    	if(!addr){
+					alert_("请输入详细地址！")
+					$(".address_Btn").removeAttr("disabled");
+					return false;
+				}
+		    	var parm = {
+		    		area: area,
+		    		addr: addr,
+		    		name: name,
+		    		phone: phone,
+		    		isDefault: isDefault
+		    	}
+		    	$.ajax({
+		    		type:"post",
+		    		url: ajax_url()+"busiUserAddr/addAddr.shtml?token=" + token,
+		    		async:true,
+		    		data:parm,
+		    		success: function(data){
+		    			console.log(data)
+		    			var data = eval("("+data+")")
+//							console.log(data)
+							if(data.success){
+								alert_(data.success);
+								setTimeout(function(){
+									window.location.href = "Address.html"
+								},1000)
+							}else{
+								alert_(data.error);
+			      				$(".address_Btn").removeAttr("disabled");
+		    			}
+		    			
+		    		}
+		    	});
+		    })
+		</script>
+	</body>
+</html>

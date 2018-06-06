@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="screen-orientation"content="portrait" />
+    <meta name="x5-orientation"content="portrait" />
+    <title>个人中心</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/alert_.css" />
+
+</head>
+<body>
+	
+	<!--content 内容区-->
+	<div id="content" class="content">
+		
+	</div>
+	
+	<!--footer-->
+	<footer>
+		<div class="to_index footer_active" onclick="init()">
+			<p>
+			</p>
+			<span>首页</span>
+		</div>
+		<div class="to_stock" onclick="to_stock()">
+			<p></p>
+			<span>进货</span>
+		</div>
+		<div class="to_distribution" onclick="to_distribution()">
+			<p></p>
+			<span>分销</span>
+		</div>
+		<div class="to_membercenter" onclick="to_membercenter()">
+			<p></p>
+			<span>个人</span>
+		</div>
+	</footer>
+	
+	<!--首页-->
+	<script type="text/html" id="content_index">
+		<div class="indexHead">
+			<div class="indexHeadPic">
+				<img src="img/indexBg.png" width="100%" />
+			</div>
+			<div class="indexHeadTitle">
+				<p class="midText colorWhite textCenter">欢迎来到</p>
+				<p class="bigText colorWhite textCenter">中辰梁品管理系统</p>
+			</div>
+		</div>
+		<div class="commonContainer" style="margin-top: 1.2rem;margin-bottom: 1.2rem;">
+			<a class="commonBtn btnBigSize colorWhite textCenter"  onclick="toBeCoFounders()">
+				<img src="img/lhchr.png" style="width: 2rem;vertical-align: top;margin-top: 0.5rem;">
+				<span style="line-height: 3rem;display: inline-block;">成为联合创始人</span>
+			</a>
+		</div>
+		<div class="commonContainer indexNews">
+			<div class="indexNewsCell clearfix">
+				<div class="left" style="width: 20%;">
+					<img src="img/distribution_khdd.png" width="80%"  style="margin-top: 1rem;"/>
+				</div>
+				<div class="left" style="width: 70%;">
+					<p class="newsTitle" style="margin-top: 0.5rem;">分销平台，分销渠道数据尽在掌握</p>
+					<p class="smallText colorFont newsBody">分销平台，分销渠道数据尽在掌握分销平台，分销渠道数据尽在掌握分销平台，分销渠道数据尽在掌握分销平台，分销渠道数据尽在掌握分销平台，分销渠道数据尽在掌握.....</p>
+				</div>
+				<div class="right" style="width: 10%;padding-top: 1rem;font-size: 2rem;">
+					<span class="colorFont">></span>
+				</div>
+			</div>
+			<div class="indexNewsCell clearfix">
+				<div class="left" style="width: 20%;">
+					<img src="img/distribution_khdd.png"  />
+				</div>
+				<div class="left" style="width: 70%;">
+					<p class="newsTitle">分销平台，分销渠道数据尽在掌握</p>
+					<p class="smallText colorFont newsBody">分销平台，分销渠道数据尽在掌握分销平台，分销渠道数据尽在掌握分销平台，分销渠道数据尽在掌握分销平台，分销渠道数据尽在掌握分销平台，分销渠道数据尽在掌握.....</p>
+				</div>
+				<div class="right" style="width: 10%;padding-top: 1rem;font-size: 2rem;">
+					<span class="colorFont">></span>
+				</div>
+			</div>
+		</div>
+	</script>
+	<!--进货-->
+	<script type="text/html" id="content_stock">
+		<img src="img/goods.jpg" width="100%" >
+		<img src="img/stock1.jpg" width="100%">
+		<img src="img/stock2.jpg" width="100%" style="padding-bottom: 7rem;">
+		
+		<button class="stockBtn">我要进货</button>
+	</script>
+	<!--分销-->
+	<script type="text/html" id="content_distribution">
+		<div class="distributionBox">
+			<div class="container">
+				<div class="distributionTj clearfix">
+					<div class="left">
+						<p class="colorWhite bigText" id="totalMonthGoods">123456</p>
+						<p class="colorWhite midText">当月拿货量</p>
+						<p class="colorGreen mismText" >总价：<span id="totalMonthAmt"></span></p>
+					</div>
+					<div class="right">
+						<p class="colorWhite bigText" id="totalgoods">123456</p>
+						<p class="colorWhite midText">累计拿货量</p>
+						<p class="colorGreen mismText" >总价：<span id="totalAmt"></span></p>
+					</div>
+				</div>
+				<div class="distributionTz clearfix">
+					<div class="left distributionTzCell" onclick="location_('customerManagement')">
+						<div class="distributionTzPic">
+							<img src="img/distribution_khgl.png">
+						</div>
+						<p class="midText">客户管理</p>
+					</div>
+					<div class="left distributionTzCell" onclick="location_('MonthlyDeliveryPerformance')">
+						<div class="distributionTzPic">
+							<img src="img/distribution_myyj.png">
+						</div>
+						<p class="midText">每月业绩</p>
+					</div>
+					<div class="left distributionTzCell" onclick="location_('MonthlyBonusInquiries')">
+						<div class="distributionTzPic">
+							<img src="img/distribution_jjjl.png">
+						</div>
+						<p class="midText">奖金记录</p>
+					</div>
+					<div class="left distributionTzCell" onclick="location_('customerOrderManagement')">
+						<div class="distributionTzPic">
+							<img src="img/distribution_khdd.png">
+						</div>
+						<p class="midText">客户订单</p>
+					</div>
+					<div class="left distributionTzCell" onclick="location_('MyOrderManagement')">
+						<div class="distributionTzPic">
+							<img src="img/distribution_wddd.png">
+						</div>
+						<p class="midText">我的订单</p>
+					</div>
+					<div class="left distributionTzCell" onclick="location_('requestFriend')">
+						<div class="distributionTzPic">
+							<img src="img/distribution_yqhy.png">
+						</div>
+						<p class="midText">邀请好友</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+	<!--个人中心-->
+	<script type="text/html" id="content_member">
+		<div class="memberBox">
+			<p class="colorWhite midText textCenter memberBoxTitle">个人中心</p>
+			<div class="colorWhite memberBoxHead">
+				<div class="clearfix memberBoxHeadCell">
+					<div class="left memberBoxHeadCellPic">
+						<img src="img/memberZh.png"/>
+					</div>
+					<div class="left memberBoxHeadCellWo">
+						账号：<span id="userID"></span>
+					</div>
+				</div>
+				<div class="clearfix memberBoxHeadCell">
+					<div class="left memberBoxHeadCellPic">
+						<img src="img/memberXm.png"/>
+					</div>
+					<div class="left memberBoxHeadCellWo">
+						姓名：<span id="userName"></span>
+					</div>
+				</div>
+				<div class="clearfix memberBoxHeadCell">
+					<div class="left memberBoxHeadCellPic">
+						<img src="img/memberSj.png"/>
+					</div>
+					<div class="left memberBoxHeadCellWo">
+						手机号：<span id="phone"></span>
+					</div>
+				</div>
+				<div class="clearfix memberBoxHeadCell">
+					<div class="left memberBoxHeadCellPic">
+						<img src="img/memberXm.png"/>
+					</div>
+					<div class="left memberBoxHeadCellWo">
+						等级：<span id="level"></span>
+					</div>
+				</div>
+			</div>
+			<div class="memberBoxBody">
+				<div class="clearfix memberBoxBodyCell" onclick="location_('modifyRealname')">
+					<div class="left memberBoxBodyCellPic">
+						<img src="img/memberSm.png">
+					</div>
+					<div class="left" style="padding-left: 1rem;">
+						<p class="midText">实名认证&nbsp;<span class="titleTips" id="userIDCard"></span></p>
+						<p class="smallText colorFont">受国家要求以及您的资金安全进行实名认证</p>
+					</div>
+					<div class="right">
+						<span class="colorFont">></span>
+					</div>
+				</div>
+				<div class="clearfix memberBoxBodyCell" onclick="location_('modifyPsw')">
+					<div class="left memberBoxBodyCellPic">
+						<img src="img/memberMm.png">
+					</div>
+					<div class="left" style="padding-left: 1rem;">
+						<p class="midText">登陆密码</p>
+						<p class="smallText colorFont">登录平台时需要输入密码</p>
+					</div>
+					<div class="right">
+						<span class="colorFont">></span>
+					</div>
+				</div>
+				<div class="clearfix memberBoxBodyCell" onclick="location_('modifyPhone')">
+					<div class="left memberBoxBodyCellPic">
+						<img src="img/memberPhone.png">
+					</div>
+					<div class="left" style="padding-left: 1rem;">
+						<p class="midText">手机绑定</p>
+						<p class="smallText colorFont">手机号：<span id="phoneNo"></span></p>
+					</div>
+					<div class="right">
+						<span class="colorFont">></span>
+					</div>
+				</div>
+				<div class="clearfix memberBoxBodyCell" onclick="location_('bankCard')">
+					<div class="left memberBoxBodyCellPic">
+						<img src="img/memberCard.png">
+					</div>
+					<div class="left" style="padding-left: 1rem;">
+						<p class="midText">银行卡管理</p>
+						<p class="smallText colorFont">付款时需要提供银行卡信息</p>
+					</div>
+					<div class="right">
+						<span class="colorFont">></span>
+					</div>
+				</div>
+				
+				<div class="clearfix memberBoxBodyCell" onclick="location_('Address')">
+					<div class="left memberBoxBodyCellPic">
+						<img src="img/memberAdress.png">
+					</div>
+					<div class="left" style="padding-left: 1rem;">
+						<p class="midText">收货地址管理</p>
+						<p class="smallText colorFont">收货地址用于方便上级发货</p>
+					</div>
+					<div class="right">
+						<span class="colorFont">></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+	
+<script src="http://apps.bdimg.com/libs/zepto/1.1.4/zepto.js"></script>	
+<script src="js/alert.js"></script>
+<script type="text/javascript" src="js/common.js" ></script>
+<script src="js/index.js"></script>
+</body>
+</html>
