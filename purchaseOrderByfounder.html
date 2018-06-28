@@ -135,7 +135,7 @@
 				</div>
 				<div class="clearfix deliveryBoxCell">
 					<div class="left">最低拿货数量</div>
-					<div class="right colorFont">500盒</div>
+					<div class="right colorFont">300盒</div>
 				</div>
 				<div class="clearfix deliveryBoxCell">
 					<div class="left">总价</div>
@@ -325,8 +325,8 @@
 						return false;
 					}
 					
-					if(parseInt(goodsNum)<500){
-						alert_("拿货数量最少为500")
+					if(parseInt(goodsNum)<300){
+						alert_("拿货数量最少为300")
 						$(".founderBtn").removeAttr("disabled")
 						return false;
 					}else if(parseInt(goodsNum)>10000000){
