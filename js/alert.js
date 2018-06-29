@@ -17,10 +17,10 @@ function reg_phone(num){
 
 
 function ajax_url(){
-	var url = "http://bb.csyundu.com/numberone-auth/"
+//	var url = "http://bb.csyundu.com/numberone-auth/"
 //	var url = "http://192.168.3.70:8080/numberone-auth/"
 //	var url = "http://192.168.0.61:8080/numberone-auth/"
-//	var url = "http://113.246.137.115:1778/numberone-auth/"
+	var url = "http://192.168.0.113:8080/numberone-auth/"
 	return url
 }
 
